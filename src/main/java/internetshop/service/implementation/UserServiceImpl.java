@@ -1,8 +1,8 @@
-package internetshop.services.implementation;
+package internetshop.service.implementation;
 
 import internetshop.domain.User;
-import internetshop.repositories.UserRepository;
-import internetshop.services.UserService;
+import internetshop.repository.UserRepository;
+import internetshop.service.UserService;
 import org.springframework.stereotype.Service;
 
 @Service("userService")

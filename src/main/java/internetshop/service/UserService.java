@@ -1,4 +1,4 @@
-package internetshop.services;
+package internetshop.service;
 
 import internetshop.domain.User;
 
