@@ -2,7 +2,9 @@ package internetshop.rest;
 
 import internetshop.model.Order;
 import internetshop.model.User;
+import internetshop.repository.RepositoryException;
 import internetshop.service.OrderService;
+import internetshop.service.ServiceException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,34 +21,29 @@ public class OrderRestController {
     }
 
     @GetMapping
-    public List<Order> getOrders(@AuthenticationPrincipal User user){
-        List<Order> orders = orderService.getAllByUserId(user.getId());
-        return orders;
+    public List<Order> getOrders(@AuthenticationPrincipal User user) throws ServiceException {
+        return orderService.getAllByUserId(user.getId());
     }
 
     @GetMapping("/{id}")
-    public Order getOrder(@PathVariable Long id){
-        Order order = orderService.getById(id);
-        return order;
+    public Order getOrder(@PathVariable Long id) throws ServiceException, RepositoryException {
+        return orderService.getById(id);
     }
 
     @PostMapping
-    public Order createOrder(@RequestBody Order order){
+    public Order createOrder(@RequestBody Order order) throws ServiceException {
         orderService.add(order);
-        Order result = orderService.getByNumber(order.getOrderNumber());
-        return  result;
+        return orderService.getByNumber(order.getOrderNumber());
     }
 
     @PutMapping("/{orderNumber}")
-    public Order updateOrder(@PathVariable Long orderNumber, @RequestBody Order order){
+    public Order updateOrder(@PathVariable Long orderNumber, @RequestBody Order order) throws ServiceException {
         orderService.update(order);
-        Order result = orderService.getByNumber(orderNumber);
-        return result;
+        return orderService.getByNumber(orderNumber);
     }
 
     @DeleteMapping("/{orderNumber}")
-    public void deleteOrder(@PathVariable Long orderNumber){
+    public void deleteOrder(@PathVariable Long orderNumber) throws ServiceException {
         orderService.delete(orderService.getByNumber(orderNumber));
     }
-
 }

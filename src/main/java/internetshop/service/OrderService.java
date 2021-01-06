@@ -1,14 +1,15 @@
 package internetshop.service;
 
 import internetshop.model.Order;
+import internetshop.repository.RepositoryException;
 
 import java.util.List;
 
 public interface OrderService {
-    Order getById(Long id);
-    List<Order> getAllByUserId(Long id);
-    Order getByNumber(Long orderNumber);
-    void add(Order order);
-    void update(Order order);
-    void delete(Order order);
+    Order getById(Long id) throws RepositoryException, ServiceException;
+    List<Order> getAllByUserId(Long id) throws ServiceException;
+    Order getByNumber(Long orderNumber) throws ServiceException;
+    void add(Order order) throws ServiceException;
+    void update(Order order) throws ServiceException;
+    void delete(Order order) throws ServiceException;
 }

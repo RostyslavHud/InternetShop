@@ -1,6 +1,7 @@
 package internetshop.rest;
 
 import internetshop.model.User;
+import internetshop.service.ServiceException;
 import internetshop.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,14 +15,14 @@ import java.util.Optional;
 @RequestMapping("/v1")
 public class UserRestController {
 
-    private UserService userService;
+    private final UserService userService;
     public UserRestController(UserService userService){
         this.userService = userService;
     }
 
 
     @GetMapping("/user")
-    public Optional<User> getSessionUser(){
+    public Optional<User> getSessionUser() throws ServiceException {
         Optional<User> user;
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();

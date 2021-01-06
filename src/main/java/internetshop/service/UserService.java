@@ -8,5 +8,5 @@ import java.util.Optional;
 @Service
 public interface UserService {
 
-    Optional<User> findByName(String name);
+    Optional<User> findByName(String name) throws ServiceException;
 }

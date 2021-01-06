@@ -2,6 +2,7 @@ package internetshop.service.implementation;
 
 import internetshop.model.User;
 import internetshop.repository.UserRepository;
+import internetshop.service.ServiceException;
 import internetshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,10 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public Optional<User> findByName(String name) {
+    public Optional<User> findByName(String name) throws ServiceException {
+        if (name.equals("")){
+            throw new ServiceException("Name can't be empty");
+        }
         return userRepository.findByName(name);
     }
 }

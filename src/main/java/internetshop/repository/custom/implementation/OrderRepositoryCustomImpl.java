@@ -3,6 +3,7 @@ package internetshop.repository.custom.implementation;
 import internetshop.model.Order;
 import internetshop.model.Product;
 import internetshop.repository.ProductRepository;
+import internetshop.repository.RepositoryException;
 import internetshop.repository.custom.OrderRepositoryCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +24,10 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom {
     private ProductRepository productRepository;
 
     @Override
-    public Order addProductsToOrder(Order order) {
+    public Order addProductsToOrder(Order order) throws RepositoryException {
+        if (order == null){
+            throw new RepositoryException("Order is empty.");
+        }
         String query = "select product_id, product_qty from orders_products where order_id = ?1";
         List<Object[]> objects = entityManager.createNativeQuery(query)
                                               .setParameter(1, order.getId())
