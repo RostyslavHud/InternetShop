@@ -1,6 +1,6 @@
 package internetshop.config;
 
-import internetshop.domain.Role;
+import internetshop.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -33,7 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/store").hasAuthority(Role.ADMIN.name())
+                .antMatchers("/account").hasAnyAuthority(Role.ADMIN.name(), Role.USER.name())
+                .antMatchers("/v1/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -42,7 +42,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/")
                 .and()
                 .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "POST"))
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .deleteCookies("JSESSIONID")

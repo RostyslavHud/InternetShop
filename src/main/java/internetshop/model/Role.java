@@ -1,4 +1,4 @@
-package internetshop.domain;
+package internetshop.model;
 
 public enum Role {
     USER,

@@ -1,8 +1,12 @@
 package internetshop.service;
 
-import internetshop.domain.User;
+import internetshop.model.User;
+import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
+@Service
 public interface UserService {
 
-    User getById(long id);
+    Optional<User> findByName(String name);
 }

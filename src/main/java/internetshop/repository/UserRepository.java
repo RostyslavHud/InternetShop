@@ -1,6 +1,6 @@
 package internetshop.repository;
 
-import internetshop.domain.User;
+import internetshop.model.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

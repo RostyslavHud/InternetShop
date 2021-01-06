@@ -1,6 +1,6 @@
 package internetshop.security;
 
-import internetshop.domain.User;
+import internetshop.model.User;
 import internetshop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

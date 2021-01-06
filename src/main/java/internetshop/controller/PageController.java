@@ -6,17 +6,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping
-public class LoginController {
+public class PageController {
 
     @GetMapping("/login")
     public String getLoginPage() {
         return "login";
     }
 
-    @GetMapping("/store")
-    public String getStorePage() {
-        return "store";
+    @GetMapping("/")
+    public String getHomePage() {
+        return "index";
     }
 
-
+    @GetMapping("/account")
+    public String getAccountPage() {
+        return "account/dashboard";
+    }
 }
