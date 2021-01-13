@@ -2,10 +2,13 @@ package internetshop.rest;
 
 import internetshop.model.Order;
 import internetshop.model.User;
-import internetshop.repository.RepositoryException;
+import internetshop.exception.RepositoryException;
 import internetshop.service.OrderService;
-import internetshop.service.ServiceException;
+import internetshop.service.ProductService;
+import internetshop.exception.ServiceException;
+import internetshop.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,13 +18,18 @@ import java.util.List;
 public class OrderRestController {
 
     private final OrderService orderService;
+    private final UserService userService;
+    private final ProductService productService;
 
-    public OrderRestController(OrderService orderService){
+    public OrderRestController(OrderService orderService, UserService userService, ProductService productService){
         this.orderService = orderService;
+        this.userService = userService;
+        this.productService = productService;
     }
 
     @GetMapping
-    public List<Order> getOrders(@AuthenticationPrincipal User user) throws ServiceException {
+    public List<Order> getOrders(@AuthenticationPrincipal UserDetails userDetails) throws ServiceException, RepositoryException {
+        User user = userService.findByName(userDetails.getUsername()).get();
         return orderService.getAllByUserId(user.getId());
     }
 
@@ -31,19 +39,19 @@ public class OrderRestController {
     }
 
     @PostMapping
-    public Order createOrder(@RequestBody Order order) throws ServiceException {
-        orderService.add(order);
+    public Order createOrder(@RequestBody Order order, @AuthenticationPrincipal UserDetails userDetails) throws ServiceException {
+        orderService.add(order, userDetails.getUsername());
         return orderService.getByNumber(order.getOrderNumber());
     }
 
-    @PutMapping("/{orderNumber}")
-    public Order updateOrder(@PathVariable Long orderNumber, @RequestBody Order order) throws ServiceException {
-        orderService.update(order);
-        return orderService.getByNumber(orderNumber);
+    @PutMapping
+    public Order updateOrder(@RequestBody Order order, @AuthenticationPrincipal UserDetails userDetails) throws ServiceException, RepositoryException {
+        orderService.update(order, userDetails.getUsername());
+        return orderService.getByNumber(order.getOrderNumber());
     }
 
-    @DeleteMapping("/{orderNumber}")
-    public void deleteOrder(@PathVariable Long orderNumber) throws ServiceException {
-        orderService.delete(orderService.getByNumber(orderNumber));
+    @DeleteMapping("/{id}")
+    public void deleteOrder(@PathVariable Long id) throws ServiceException, RepositoryException {
+        orderService.delete(orderService.getById(id));
     }
 }

@@ -1,7 +1,7 @@
 package internetshop.rest;
 
 import internetshop.model.User;
-import internetshop.service.ServiceException;
+import internetshop.exception.ServiceException;
 import internetshop.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

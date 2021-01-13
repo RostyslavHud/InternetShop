@@ -1,4 +1,4 @@
-package internetshop.repository;
+package internetshop.exception;
 
 public class RepositoryException extends Exception {
 

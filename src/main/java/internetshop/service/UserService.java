@@ -1,5 +1,6 @@
 package internetshop.service;
 
+import internetshop.exception.ServiceException;
 import internetshop.model.User;
 import org.springframework.stereotype.Service;
 

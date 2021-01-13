@@ -7,47 +7,8 @@
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
           crossorigin="anonymous">
     <title>Internet Shop</title>
+    <script src="/js/navigation.js"></script>
 </head>
-<script type = "text/javascript">
-    function show_user(){
-        $.get('/v1/user', function (data){
-            console.log(data);
-
-            let button;
-
-            if (data == null){
-                 button = "<div class=\"collapse navbar-collapse\" id=\"navbarSignin\">\n" +
-                     "            <ul class=\"navbar-nav mr-auto\">\n" +
-                     "                <li class=\"nav-item active\">\n" +
-                     "                    <a class=\"nav-link\" href=\"/login\">Login<span class=\"sr-only\"></span></a>\n" +
-                     "                </li>\n" +
-                     "            </ul>\n" +
-                     "        </div>";
-            }else {
-                button = "<div class=\"collapse navbar-collapse\" id=\"navbarStore\">\n" +
-                    "            <ul class=\"navbar-nav mr-auto\">\n" +
-                    "                <li class=\"nav-item active\">\n" +
-                    "                    <a class=\"nav-link\" href=\"/account\">My Account<span class=\"sr-only\"></span></a>\n" +
-                    "                </li>\n" +
-                    "            </ul>\n" +
-                    "        </div>" +
-                    "<div class=\"collapse navbar-collapse\" id=\"navbarLogout\" hidden>\n" +
-                    "            <ul class=\"navbar-nav mr-auto\">\n" +
-                    "                <li class=\"nav-item active\">\n" +
-                    "                    <a class=\"nav-link\" href=\"/logout\">("+ data.name +") Logout<span class=\"sr-only\"></span></a>\n" +
-                    "                </li>\n" +
-                    "            </ul>\n" +
-                    "        </div>";
-            }
-            $("#logB").html(button);
-
-        })
-    }
-
-    $(document).ready(function () {
-        show_user();
-    })
-</script>
 <body>
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light" id="logB">

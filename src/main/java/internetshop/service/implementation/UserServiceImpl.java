@@ -2,7 +2,7 @@ package internetshop.service.implementation;
 
 import internetshop.model.User;
 import internetshop.repository.UserRepository;
-import internetshop.service.ServiceException;
+import internetshop.exception.ServiceException;
 import internetshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

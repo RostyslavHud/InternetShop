@@ -1,6 +1,6 @@
 package internetshop.config;
 
-import internetshop.model.Role;
+import internetshop.enums.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -32,7 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/account").hasAnyAuthority(Role.ADMIN.name(), Role.USER.name())
+                .antMatchers("/js/**").permitAll()
+                .antMatchers("/account/**").hasAnyAuthority(Role.ADMIN.name(), Role.USER.name())
                 .antMatchers("/v1/**").permitAll()
                 .anyRequest()
                 .authenticated()

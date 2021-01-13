@@ -1,4 +1,4 @@
-package internetshop.service;
+package internetshop.exception;
 
 public class ServiceException extends Exception {
 

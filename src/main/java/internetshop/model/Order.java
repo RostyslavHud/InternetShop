@@ -1,38 +1,44 @@
 package internetshop.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import internetshop.enums.OrderStatus;
+import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.List;
+
 
 @Entity
-@NamedQuery(
-        name = "Order.findByNumber",
-        query = "select o from Order o where o.orderNumber = :orderNumber")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 @Table(name = "orders")
 public class Order {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "order_number")
     private Long orderNumber;
-    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     @Column(name = "order_date")
-    private Date date;
+    private LocalDateTime date;
     @Column(name = "order_status")
     @Enumerated(value = EnumType.STRING)
     private OrderStatus status;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @Transient
-    private Map<Product, Integer> products;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "orders_order_items", joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "order_item_id"))
+    private List<OrderItem> orderItems;
     @Column(name = "shipping_address")
     private String shippingAddress;
     @Column(name = "description")

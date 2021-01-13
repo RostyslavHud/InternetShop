@@ -1,15 +1,19 @@
 package internetshop.model;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Data
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 @Table(name = "products")
 public class Product {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "product_name")
     private String name;
