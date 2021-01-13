@@ -11,7 +11,14 @@ function show_user(){
             "        </div>";
 
         if (data == null){
-            button = button + "<div class=\"collapse navbar-collapse\" id=\"navbarSignin\">\n" +
+            button = button + "<div class=\"collapse navbar-collapse\" id=\"navbarRegistration\">\n" +
+                "            <ul class=\"navbar-nav mr-auto\">\n" +
+                "                <li class=\"nav-item active\">\n" +
+                "                    <a class=\"nav-link\" href=\"/registration\">Create new account<span class=\"sr-only\"></span></a>\n" +
+                "                </li>\n" +
+                "            </ul>\n" +
+                "        </div>\n" +
+                "<div class=\"collapse navbar-collapse\" id=\"navbarSignin\">\n" +
                 "            <ul class=\"navbar-nav mr-auto\">\n" +
                 "                <li class=\"nav-item active\">\n" +
                 "                    <a class=\"nav-link\" href=\"/login\">Login<span class=\"sr-only\"></span></a>\n" +

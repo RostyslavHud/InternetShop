@@ -32,6 +32,11 @@ public class PageController {
         return "account/order/orders";
     }
 
+    @GetMapping("/registration")
+    public String getRegistrationPage() {
+        return "registration";
+    }
+
     @GetMapping("/new_order")
     public String getNewOrderPage() {
         return "account/order/create_order";
