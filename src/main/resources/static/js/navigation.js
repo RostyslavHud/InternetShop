@@ -1,5 +1,5 @@
 function show_user(){
-    $.get('/v1/user', function (data){
+    $.get('/v1-public/user', function (data){
         console.log(data);
 
         let button = "<div class=\"collapse navbar-collapse\" id=\"navbarSignin\">\n" +

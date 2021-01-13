@@ -1,22 +1,25 @@
 package internetshop.service.implementation;
 
+import internetshop.enums.Role;
 import internetshop.model.Order;
-import internetshop.model.OrderItem;
 import internetshop.enums.OrderStatus;
+import internetshop.model.User;
 import internetshop.repository.OrderRepository;
 import internetshop.repository.ProductRepository;
-import internetshop.exception.RepositoryException;
 import internetshop.repository.UserRepository;
 import internetshop.service.OrderService;
 import internetshop.exception.ServiceException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service("orderService")
+@Slf4j
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
@@ -29,19 +32,27 @@ public class OrderServiceImpl implements OrderService {
     UserRepository userRepository;
 
     @Override
-    public Order getById(Long id) throws RepositoryException, ServiceException {
+    public Order getById(Long id) throws ServiceException {
         if (id < 1) {
             throw new ServiceException("Id must be below zero");
         }
-        return orderRepository.findById(id).get();
+        return orderRepository.findById(id).orElseThrow(() -> new ServiceException("Order not found"));
     }
 
     @Override
-    public List<Order> getAllByUserId(Long id) throws ServiceException, RepositoryException {
-        if (id < 1) {
-            throw new ServiceException("Id must be below zero");
+    public List<Order> getAll(String userName) throws ServiceException {
+        if (userName.equals("")) {
+            throw new ServiceException("User name can't be empty");
         }
-        List<Order> orders = orderRepository.findAllByUserId(id).get();
+        List<Order> orders = new ArrayList<>();
+        User user = userRepository.findByName(userName).orElseThrow(() -> new ServiceException("User not found"));
+        if (user.getRole() == Role.USER){
+            orders = orderRepository.findAllByUserId(user.getId());
+        }else if (user.getRole() == Role.ADMIN){
+            log.error("Test1");
+            orderRepository.findAll().forEach(orders::add);
+            log.error("Test2");
+        }
         return orders;
     }
 
@@ -51,12 +62,7 @@ public class OrderServiceImpl implements OrderService {
             throw new ServiceException("Order number can't be 0");
         }
         Optional<Order> order = orderRepository.findOrderByOrderNumber(orderNumber);
-        return order.get();
-    }
-
-    @Override
-    public List<Order> findAll() {
-        return (List<Order>) orderRepository.findAll();
+        return order.orElseThrow();
     }
 
     @Override
@@ -64,16 +70,11 @@ public class OrderServiceImpl implements OrderService {
         if (order == null){
             throw new ServiceException("Order can't be null");
         }
-        List<Order> orders = (List<Order>) orderRepository.findAll();
-        Long maxOrderNumber = orders.get(orders.size() - 1).getOrderNumber();
-        Order newOrder = order;
-        newOrder.setOrderNumber(maxOrderNumber + 1);
-        newOrder.setUser(userRepository.findByName(userName).get());
-        newOrder.setDate(LocalDateTime.now());
-        newOrder.setStatus(OrderStatus.CREATED);
-        for (OrderItem orderItem : newOrder.getOrderItems()){
-            orderItem.setProduct(productRepository.findByName(orderItem.getProduct().getName()).get());
-        }
+        Long maxOrderNumber = orderRepository.findMaxOrderNumber();
+        order.setOrderNumber(maxOrderNumber + 1);
+        order.setUser(userRepository.findByName(userName).orElseThrow(() -> new ServiceException("User not found")));
+        order.setDate(LocalDateTime.now());
+        order.setStatus(OrderStatus.CREATED);
         orderRepository.save(order);
     }
 
@@ -85,14 +86,16 @@ public class OrderServiceImpl implements OrderService {
         if (order.getOrderNumber() < 1){
             throw new ServiceException("Order id must be below zero");
         }
-        Order savedOrder = orderRepository.findOrderByOrderNumber(order.getOrderNumber()).get();
-        if (!order.getOrderItems().get(0).getProduct().getName().equals("None")){
-            savedOrder.getOrderItems().get(0).setProduct(productRepository.findByName(order.getOrderItems().get(0).getProduct().getName()).get());
+        Order savedOrder = orderRepository.findOrderByOrderNumber(order.getOrderNumber())
+                                          .orElseThrow(() -> new ServiceException("Order not found"));
+        if (order.getOrderItems().get(0).getProduct().getId() != 0){
+            savedOrder.getOrderItems().get(0).setProduct(order.getOrderItems().get(0).getProduct());
         }
         if (order.getOrderItems().get(0).getProductQty() != 0){
             savedOrder.getOrderItems().get(0).setProductQty(order.getOrderItems().get(0).getProductQty());
         }
 
+        savedOrder.setUpdated(userName);
         savedOrder.setShippingAddress(order.getShippingAddress());
         savedOrder.setDescription(order.getDescription());
 

@@ -37,16 +37,16 @@ public class PageController {
         return "registration";
     }
 
-    @GetMapping("/new_order")
+    @GetMapping("/new-order")
     public String getNewOrderPage() {
-        return "account/order/create_order";
+        return "account/order/create-order";
     }
 
     @GetMapping("/order/update")
     public String getUpdateForm(@RequestParam("id") long id, Model model) throws ServiceException, RepositoryException {
 
         model.addAttribute(orderService.getById(id));
-        return "account/order/update_order";
+        return "account/order/update-order";
     }
 
 }

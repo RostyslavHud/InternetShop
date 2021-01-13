@@ -2,12 +2,13 @@ function show_orders(){
     $.get('/v1/orders', function (data){
         let table = "<table border = '1'> <tr><th scope=\"col\">Order number</th><th>Order date</th>" +
             "<th>Customer name</th> <th>Shipping address</th>" +
-            "<th>Description</th><th>Order status</th><th></th><th></th></tr>";
+            "<th>Description</th><th>Order status</th><th>Update BY</th><th></th><th></th></tr>";
 
         for (i = 0; i < data.length; i++){
             table = table + "<tr scope=\"row\"><td>" + data[i].orderNumber + "</td><td>" + data[i].date + "</td>" +
-                "<td>" + data[i].user.name + "</td><td>" + data[i].shippingAddress + "</td>" +
-                "<td>" + data[i].description + "</td><td>" + data[i].status + "</td>" +
+                "<td>" + data[i].user.name + "</td><td>" + data[i].shippingAddress + "</td>\n" +
+                "<td>" + data[i].description + "</td><td>" + data[i].status + "</td>\n" +
+                "<td>"+data[i].updated+"</td>\n" +
                 "<td><form action='/order/update'>\n" +
                 "     <input type='hidden' name='id' value='"+data[i].id+"'/>\n" +
                 "     <button type='submit' class='btn btn-secondary'>Update</button>\n" +
@@ -26,7 +27,7 @@ function update_order(){
     let order = {
         orderItems:[{
             product:{
-                name: $("#products").val(),
+                id: $("#products").val(),
             },
             productQty: $("#product_qty").val(),
         }],
@@ -36,7 +37,7 @@ function update_order(){
     };
 
     $.ajax({
-        url: '/v1/orders',
+        url: '/v1/orders/' + $("#order_id").val(),
         type: 'PUT',
         dataType: 'json',
         contentType: 'application/json',
@@ -65,7 +66,7 @@ function send_order(){
     let order = {
         orderItems:[{
             product:{
-                name: $("#products").val(),
+                id: $("#products").val(),
             },
             productQty: $("#product_qty").val(),
         }],

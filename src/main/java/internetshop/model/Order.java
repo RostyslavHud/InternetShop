@@ -32,7 +32,7 @@ public class Order {
     @Enumerated(value = EnumType.STRING)
     private OrderStatus status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -46,4 +46,7 @@ public class Order {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "updated")
+    private String updated;
 }
