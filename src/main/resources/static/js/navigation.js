@@ -1,5 +1,5 @@
-function show_user(){
-    $.get('/v1-public/user', function (data){
+function show_user() {
+    $.get('/v1-public/user', function (data) {
         console.log(data);
 
         let button = "<div class=\"collapse navbar-collapse\" id=\"navbarSignin\">\n" +
@@ -10,7 +10,7 @@ function show_user(){
             "            </ul>\n" +
             "        </div>";
 
-        if (data == null){
+        if (data.name == null) {
             button = button + "<div class=\"collapse navbar-collapse\" id=\"navbarRegistration\">\n" +
                 "            <ul class=\"navbar-nav mr-auto\">\n" +
                 "                <li class=\"nav-item active\">\n" +
@@ -25,7 +25,7 @@ function show_user(){
                 "                </li>\n" +
                 "            </ul>\n" +
                 "        </div>";
-        }else {
+        } else {
             button = button + "<div class=\"collapse navbar-collapse\" id=\"navbarStore\">\n" +
                 "            <ul class=\"navbar-nav mr-auto\">\n" +
                 "                <li class=\"nav-item active\">\n" +
@@ -36,7 +36,7 @@ function show_user(){
                 "<div class=\"collapse navbar-collapse\" id=\"navbarLogout\" hidden>\n" +
                 "            <ul class=\"navbar-nav mr-auto\">\n" +
                 "                <li class=\"nav-item active\">\n" +
-                "                    <a class=\"nav-link\" href=\"/logout\">("+ data.name +") Logout<span class=\"sr-only\"></span></a>\n" +
+                "                    <a class=\"nav-link\" href=\"/logout\">(" + data.name + ") Logout<span class=\"sr-only\"></span></a>\n" +
                 "                </li>\n" +
                 "            </ul>\n" +
                 "        </div>";

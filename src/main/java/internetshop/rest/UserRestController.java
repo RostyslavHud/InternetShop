@@ -3,32 +3,38 @@ package internetshop.rest;
 import internetshop.model.User;
 import internetshop.exception.ServiceException;
 import internetshop.service.UserService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import javax.validation.Valid;
+
 
 @RestController
 @RequestMapping("/v1-public/")
+@Slf4j
 public class UserRestController {
 
     private final UserService userService;
-    public UserRestController(UserService userService){
+
+    public UserRestController(UserService userService) {
         this.userService = userService;
     }
 
 
     @GetMapping("/user")
-    public Optional<User> getSessionUser() throws ServiceException {
-        Optional<User> user;
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
-        user = userService.findByName(name);
-
+    public User getSessionUser(@AuthenticationPrincipal UserDetails userDetails) throws ServiceException {
+        User user = new User();
+        if (userDetails != null) {
+            user = userService.findByName(userDetails.getUsername());
+        }
         return user;
     }
 
+    @PostMapping("/add")
+    public User addUser(@Valid @RequestBody User user) throws ServiceException {
+        userService.addUser(user);
+        return user;
+    }
 }
