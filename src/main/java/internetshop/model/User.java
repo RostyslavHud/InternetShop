@@ -1,11 +1,13 @@
 package internetshop.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import internetshop.enums.Role;
 import lombok.Data;
 
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -48,6 +50,16 @@ public class User {
     @Min(14)
     @Column(name = "age")
     private int age;
+
+    @Column(name = "active")
+    private boolean active;
+
+    @Column(name = "active_code")
+    private String activeCode;
+
+    @Column(name = "registration_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime registrationDate;
 
     @AssertFalse(message = "Password and Confirm password can be same")
     private boolean isConfirmedPassword() {
