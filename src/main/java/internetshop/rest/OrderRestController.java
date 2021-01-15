@@ -1,7 +1,6 @@
 package internetshop.rest;
 
 import internetshop.model.Order;
-import internetshop.exception.RepositoryException;
 import internetshop.service.OrderService;
 import internetshop.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
@@ -23,12 +22,12 @@ public class OrderRestController {
     }
 
     @GetMapping
-    public List<Order> getOrders(@AuthenticationPrincipal UserDetails userDetails) throws ServiceException, RepositoryException {
+    public List<Order> getOrders(@AuthenticationPrincipal UserDetails userDetails) throws ServiceException {
         return orderService.getAll(userDetails.getUsername());
     }
 
     @GetMapping("/{id}")
-    public Order getOrder(@PathVariable Long id) throws ServiceException, RepositoryException {
+    public Order getOrder(@PathVariable Long id) throws ServiceException {
         return orderService.getById(id);
     }
 
@@ -45,7 +44,7 @@ public class OrderRestController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteOrder(@PathVariable Long id) throws ServiceException, RepositoryException {
+    public void deleteOrder(@PathVariable Long id) throws ServiceException {
         orderService.delete(orderService.getById(id));
     }
 }

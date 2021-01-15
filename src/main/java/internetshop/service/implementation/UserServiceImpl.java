@@ -1,5 +1,6 @@
 package internetshop.service.implementation;
 
+import internetshop.enums.Errors;
 import internetshop.enums.Role;
 import internetshop.model.User;
 import internetshop.repository.UserRepository;
@@ -23,15 +24,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByName(String name) throws ServiceException {
         if (name.equals("")){
-            throw new ServiceException("Name can't be empty");
+            throw new ServiceException(Errors.EMPTY_USER_NAME);
         }
-        return userRepository.findByName(name).orElseThrow(()->new ServiceException("User not found"));
+        return userRepository.findByName(name).orElseThrow(()->new ServiceException(Errors.USER_NOT_FOUND));
     }
 
     @Override
     public void addUser(User user) throws ServiceException {
         if (user == null) {
-            throw new ServiceException("User can't be empty");
+            throw new ServiceException(Errors.EMPTY_USER);
+        }
+        if (userRepository.countName(user.getName()) > 0) {
+            throw new ServiceException(Errors.SAME_USER_NAME);
         }
         user.setRole(Role.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));

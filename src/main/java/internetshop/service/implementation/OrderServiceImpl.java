@@ -1,5 +1,6 @@
 package internetshop.service.implementation;
 
+import internetshop.enums.Errors;
 import internetshop.enums.Role;
 import internetshop.model.Order;
 import internetshop.enums.OrderStatus;
@@ -34,18 +35,18 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order getById(Long id) throws ServiceException {
         if (id < 1) {
-            throw new ServiceException("Id must be below zero");
+            throw new ServiceException(Errors.INCORRECT_ID);
         }
-        return orderRepository.findById(id).orElseThrow(() -> new ServiceException("Order not found"));
+        return orderRepository.findById(id).orElseThrow(() -> new ServiceException(Errors.ORDER_NOT_FOUND));
     }
 
     @Override
     public List<Order> getAll(String userName) throws ServiceException {
         if (userName.equals("")) {
-            throw new ServiceException("User name can't be empty");
+            throw new ServiceException(Errors.EMPTY_USER_NAME);
         }
         List<Order> orders = new ArrayList<>();
-        User user = userRepository.findByName(userName).orElseThrow(() -> new ServiceException("User not found"));
+        User user = userRepository.findByName(userName).orElseThrow(() -> new ServiceException(Errors.USER_NOT_FOUND));
         if (user.getRole() == Role.USER){
             orders = orderRepository.findAllByUserId(user.getId());
         }else if (user.getRole() == Role.ADMIN){
@@ -59,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order getByNumber(Long orderNumber) throws ServiceException {
         if (orderNumber == 0) {
-            throw new ServiceException("Order number can't be 0");
+            throw new ServiceException(Errors.EMPTY_ORDER_NUMBER);
         }
         Optional<Order> order = orderRepository.findOrderByOrderNumber(orderNumber);
         return order.orElseThrow();
@@ -68,11 +69,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void add(Order order, String userName) throws ServiceException {
         if (order == null){
-            throw new ServiceException("Order can't be null");
+            throw new ServiceException(Errors.EMPTY_ORDER);
         }
         Long maxOrderNumber = orderRepository.findMaxOrderNumber();
         order.setOrderNumber(maxOrderNumber + 1);
-        order.setUser(userRepository.findByName(userName).orElseThrow(() -> new ServiceException("User not found")));
+        order.setUser(userRepository.findByName(userName).orElseThrow(() -> new ServiceException(Errors.USER_NOT_FOUND)));
         order.setDate(LocalDateTime.now());
         order.setStatus(OrderStatus.CREATED);
         orderRepository.save(order);
@@ -81,13 +82,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void update(Order order, String userName) throws ServiceException {
         if (order == null){
-            throw new ServiceException("Order can't be null");
+            throw new ServiceException(Errors.EMPTY_ORDER);
         }
         if (order.getOrderNumber() < 1){
-            throw new ServiceException("Order id must be below zero");
+            throw new ServiceException(Errors.INCORRECT_ID);
         }
         Order savedOrder = orderRepository.findOrderByOrderNumber(order.getOrderNumber())
-                                          .orElseThrow(() -> new ServiceException("Order not found"));
+                                          .orElseThrow(() -> new ServiceException(Errors.ORDER_NOT_FOUND));
         if (order.getOrderItems().get(0).getProduct().getId() != 0){
             savedOrder.getOrderItems().get(0).setProduct(order.getOrderItems().get(0).getProduct());
         }
@@ -105,10 +106,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void delete(Order order) throws ServiceException {
         if (order == null){
-            throw new ServiceException("Order can't be null");
+            throw new ServiceException(Errors.EMPTY_ORDER);
         }
         if (order.getId() < 1){
-            throw new ServiceException("Order id must be below zero");
+            throw new ServiceException(Errors.INCORRECT_ID);
         }
         orderRepository.delete(order);
     }

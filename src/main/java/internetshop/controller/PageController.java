@@ -1,6 +1,5 @@
 package internetshop.controller;
 
-import internetshop.exception.RepositoryException;
 import internetshop.service.OrderService;
 import internetshop.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +42,7 @@ public class PageController {
     }
 
     @GetMapping("/order/update")
-    public String getUpdateForm(@RequestParam("id") long id, Model model) throws ServiceException, RepositoryException {
+    public String getUpdateForm(@RequestParam("id") long id, Model model) throws ServiceException {
 
         model.addAttribute(orderService.getById(id));
         return "account/order/update-order";

@@ -1,8 +1,14 @@
 package internetshop.exception;
 
+import internetshop.enums.Errors;
+import lombok.Getter;
+
+@Getter
 public class ServiceException extends Exception {
 
-    public ServiceException(String message) {
-        super(message);
+    private Errors errors;
+    public ServiceException(Errors errors) {
+        super(errors.getMessage());
+        this.errors = errors;
     }
 }
