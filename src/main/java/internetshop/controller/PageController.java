@@ -48,4 +48,8 @@ public class PageController {
         return "account/order/update-order";
     }
 
+    @GetMapping("/confirm-registration")
+    public String getConfirmRegistrationPage() {
+        return "confirm-registration";
+    }
 }

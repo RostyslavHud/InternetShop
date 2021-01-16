@@ -1,7 +1,5 @@
 package internetshop.service.implementation;
 
-import internetshop.enums.Errors;
-import internetshop.exception.ServiceException;
 import internetshop.model.Product;
 import internetshop.repository.ProductRepository;
 import internetshop.service.ProductService;
@@ -20,10 +18,5 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getAll() {
         return (List<Product>) productRepository.findAll();
-    }
-
-    @Override
-    public Product findByName(String name) throws ServiceException {
-        return productRepository.findByName(name).orElseThrow(() -> new ServiceException(Errors.PRODUCT_NOT_FOUND));
     }
 }

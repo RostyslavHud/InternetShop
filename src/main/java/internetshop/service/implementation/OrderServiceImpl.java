@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service("orderService")
 @Slf4j
@@ -46,34 +45,26 @@ public class OrderServiceImpl implements OrderService {
             throw new ServiceException(Errors.EMPTY_USER_NAME);
         }
         List<Order> orders = new ArrayList<>();
-        User user = userRepository.findByName(userName).orElseThrow(() -> new ServiceException(Errors.USER_NOT_FOUND));
-        if (user.getRole() == Role.USER){
+        User user = userRepository.findByName(userName);
+        if (user.getRole() == Role.USER) {
             orders = orderRepository.findAllByUserId(user.getId());
-        }else if (user.getRole() == Role.ADMIN){
-            log.error("Test1");
+        } else if (user.getRole() == Role.ADMIN) {
             orderRepository.findAll().forEach(orders::add);
-            log.error("Test2");
         }
         return orders;
     }
 
     @Override
-    public Order getByNumber(Long orderNumber) throws ServiceException {
-        if (orderNumber == 0) {
-            throw new ServiceException(Errors.EMPTY_ORDER_NUMBER);
-        }
-        Optional<Order> order = orderRepository.findOrderByOrderNumber(orderNumber);
-        return order.orElseThrow();
-    }
-
-    @Override
     public void add(Order order, String userName) throws ServiceException {
-        if (order == null){
+        if (order == null) {
             throw new ServiceException(Errors.EMPTY_ORDER);
         }
         Long maxOrderNumber = orderRepository.findMaxOrderNumber();
+        if (maxOrderNumber == null) {
+            maxOrderNumber = 100000L;
+        }
         order.setOrderNumber(maxOrderNumber + 1);
-        order.setUser(userRepository.findByName(userName).orElseThrow(() -> new ServiceException(Errors.USER_NOT_FOUND)));
+        order.setUser(userRepository.findByName(userName));
         order.setDate(LocalDateTime.now());
         order.setStatus(OrderStatus.CREATED);
         orderRepository.save(order);
@@ -81,18 +72,18 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void update(Order order, String userName) throws ServiceException {
-        if (order == null){
+        if (order == null) {
             throw new ServiceException(Errors.EMPTY_ORDER);
         }
-        if (order.getOrderNumber() < 1){
+        if (order.getOrderNumber() < 1) {
             throw new ServiceException(Errors.INCORRECT_ID);
         }
         Order savedOrder = orderRepository.findOrderByOrderNumber(order.getOrderNumber())
-                                          .orElseThrow(() -> new ServiceException(Errors.ORDER_NOT_FOUND));
-        if (order.getOrderItems().get(0).getProduct().getId() != 0){
+                .orElseThrow(() -> new ServiceException(Errors.ORDER_NOT_FOUND));
+        if (order.getOrderItems().get(0).getProduct().getId() != 0) {
             savedOrder.getOrderItems().get(0).setProduct(order.getOrderItems().get(0).getProduct());
         }
-        if (order.getOrderItems().get(0).getProductQty() != 0){
+        if (order.getOrderItems().get(0).getProductQty() != 0) {
             savedOrder.getOrderItems().get(0).setProductQty(order.getOrderItems().get(0).getProductQty());
         }
 
@@ -105,10 +96,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void delete(Order order) throws ServiceException {
-        if (order == null){
+        if (order == null) {
             throw new ServiceException(Errors.EMPTY_ORDER);
         }
-        if (order.getId() < 1){
+        if (order.getId() < 1) {
             throw new ServiceException(Errors.INCORRECT_ID);
         }
         orderRepository.delete(order);

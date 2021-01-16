@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta charset="UTF-8">
@@ -8,6 +8,7 @@
           crossorigin="anonymous">
     <title>Login</title>
     <script src="/js/navigation.js"></script>
+    <script src="/js/user.js"></script>
 </head>
 <body>
 <div class="container">
@@ -15,22 +16,18 @@
     </nav>
 </div>
 
-
 <div class="container">
-    <form class="form-signin" method="post" action="/login">
-        <h2 class="form-signin-heading">Login</h2>
-        <div th:if = "${param.error != null}" class="text-danger">Incorrect login or password</div>
+    <form class="form-signin" method="post" action="">
+        <h2 class="form-signin-heading">Confirm Registration Form</h2>
         <p>
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required>
+            <label for="token">Please check your email and fill token</label>
+            <input type="text" id="token" name="token" class="form-control">
+        <p id="token_error" class="text-danger"></p>
         </p>
-        <p>
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-        </p>
-        <button class="btn btn-lg btn-secondary btn-block" type="submit">Sign in</button>
+        <a class="btn btn-lg btn-secondary btn-block" onclick="conf_user()" href="#">Confirm</a>
     </form>
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"

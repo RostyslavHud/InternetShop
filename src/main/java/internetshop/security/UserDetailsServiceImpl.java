@@ -25,13 +25,26 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        User user = userRepository.findByName(name).orElseThrow(() ->
-                new UsernameNotFoundException("User doesn't exists"));
+
+        boolean active = true;
+        boolean accountNonExpired = true;
+        boolean credentialsNonExpired = true;
+        boolean accountNonLocked = true;
+
+        User user = userRepository.findByName(name);
+        if (user == null) {
+            throw new UsernameNotFoundException(
+                    "No user found with username: " + name);
+        }
         Set<GrantedAuthority> roles = new HashSet<>();
         roles.add(new SimpleGrantedAuthority(user.getRole().name()));
 
         return new org.springframework.security.core.userdetails.User(user.getName(),
                 user.getPassword(),
+                user.isActive(),
+                accountNonExpired,
+                credentialsNonExpired,
+                accountNonLocked,
                 roles);
     }
 }
