@@ -33,7 +33,9 @@ public class EmailServiceImpl implements EmailService {
 
         Context context = new Context();
         context.setVariable("token", verificationToken);
-        context.setVariable("tokenUrl", url + "/confirm/" + verificationToken.getToken());
+        StringBuilder formatUrl = new StringBuilder();
+        context.setVariable("tokenUrl", formatUrl.append(url).append("/confirm/")
+                                                       .append(verificationToken.getToken()).toString());
 
         String process = templateEngine.process("email-template/confirm-registration", context);
 
