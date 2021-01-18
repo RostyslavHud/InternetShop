@@ -3,6 +3,7 @@ package internetshop.service.implementation;
 import internetshop.model.VerificationToken;
 import internetshop.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -22,6 +23,9 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    @Value("${url}")
+    String url;
+
 
     @Async
     @Override
@@ -29,6 +33,7 @@ public class EmailServiceImpl implements EmailService {
 
         Context context = new Context();
         context.setVariable("token", verificationToken);
+        context.setVariable("tokenUrl", url + "/confirm/" + verificationToken.getToken());
 
         String process = templateEngine.process("email-template/confirm-registration", context);
 
