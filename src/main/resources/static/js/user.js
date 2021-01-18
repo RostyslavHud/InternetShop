@@ -57,31 +57,7 @@ function send_user() {
                 }
 
             } else {
-                window.location.href = '/confirm-registration'
-            }
-        }
-    })
-}
-
-function conf_user() {
-    let verificationToken = {
-        token: $("#token").val()
-    }
-
-    $.ajax({
-        url: '/v1-public/confirm',
-        dataType: 'json',
-        type: 'POST',
-        cache: false,
-        contentType: 'application/json',
-        data: JSON.stringify(verificationToken),
-        success: function (data) {
-            if (data.messages != null) {
-                if (data.messages.token != null) {
-                    $("#token_error").html(data.messages.token);
-                }
-            } else {
-                window.location.href = '/login'
+                window.location.href = '/success-registration'
             }
         }
     })

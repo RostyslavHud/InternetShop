@@ -5,6 +5,7 @@ import internetshop.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -22,6 +23,7 @@ public class EmailServiceImpl implements EmailService {
     private JavaMailSender javaMailSender;
 
 
+    @Async
     @Override
     public void sendConfirmRegistrationMail(VerificationToken verificationToken) throws MessagingException {
 

@@ -2,10 +2,12 @@ package internetshop.controller;
 
 import internetshop.service.OrderService;
 import internetshop.exception.ServiceException;
+import internetshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -15,6 +17,9 @@ public class PageController {
 
     @Autowired
     OrderService orderService;
+
+    @Autowired
+    UserService userService;
 
     @GetMapping("/login")
     public String getLoginPage() {
@@ -48,8 +53,14 @@ public class PageController {
         return "account/order/update-order";
     }
 
-    @GetMapping("/confirm-registration")
-    public String getConfirmRegistrationPage() {
-        return "confirm-registration";
+    @GetMapping("/confirm/{token}")
+    public String confirmRegistration(@PathVariable String token) throws ServiceException {
+        userService.confirmRegistration(token);
+        return "account/success/confirm-registration";
+    }
+
+    @GetMapping("/success-registration")
+    public String getSuccessRegistrationPage() {
+        return "account/success/registration";
     }
 }

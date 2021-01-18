@@ -2,7 +2,6 @@ package internetshop.rest;
 
 import internetshop.model.User;
 import internetshop.exception.ServiceException;
-import internetshop.model.VerificationToken;
 import internetshop.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -38,11 +37,5 @@ public class UserRestController {
     public User addUser(@Valid @RequestBody User user) throws ServiceException, MessagingException {
         userService.addNewUser(user);
         return user;
-    }
-
-    @PostMapping("/confirm")
-    public VerificationToken confirmRegistration(@Valid @RequestBody VerificationToken verificationToken) throws ServiceException {
-        userService.confirmRegistration(verificationToken);
-        return verificationToken;
     }
 }

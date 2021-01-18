@@ -15,5 +15,5 @@ public interface UserService {
 
     void addNewUser(User user) throws ServiceException, MessagingException;
 
-    void confirmRegistration(VerificationToken verificationToken) throws ServiceException;
+    void confirmRegistration(String token) throws ServiceException;
 }

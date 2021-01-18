@@ -66,11 +66,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void confirmRegistration(VerificationToken token) throws ServiceException {
+    public void confirmRegistration(String token) throws ServiceException {
         if (token == null) {
             throw new ServiceException(Errors.EMPTY_TOKEN);
         }
-        VerificationToken verificationToken = verificationTokenRepository.findByToken(token.getToken());
+        VerificationToken verificationToken = verificationTokenRepository.findByToken(token);
         if (verificationToken == null) {
             throw new ServiceException(Errors.INCORRECT_TOKEN);
         }

@@ -11,10 +11,10 @@
     <p>Thank you for registration.</p>
 </div>
 <div>
-    Please copy your token and go to <a href="http://localhost:8080/confirm-registration">Confirm Registration Page</a>
+    <p>Please click on confirm link</p>
 </div>
 <div>
-    <p>Your token:<b th:text="${token.token}"></b></p>
+    <p><a th:href="@{http://localhost:8080/confirm/{token}(token = ${token.token})}">Your Link for confirm</a></p>
 </div>
 
 </body>
