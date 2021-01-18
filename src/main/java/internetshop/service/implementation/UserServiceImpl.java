@@ -81,4 +81,9 @@ public class UserServiceImpl implements UserService {
         verificationToken.getUser().setConfirmPassword(verificationToken.getUser().getPassword());
         userRepository.save(verificationToken.getUser());
     }
+
+    @Override
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
+    }
 }

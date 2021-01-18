@@ -4,6 +4,7 @@ import internetshop.enums.Errors;
 import internetshop.enums.Role;
 import internetshop.model.Order;
 import internetshop.enums.OrderStatus;
+import internetshop.model.OrderItem;
 import internetshop.model.User;
 import internetshop.repository.OrderRepository;
 import internetshop.repository.ProductRepository;
@@ -80,13 +81,18 @@ public class OrderServiceImpl implements OrderService {
         }
         Order savedOrder = orderRepository.findOrderByOrderNumber(order.getOrderNumber())
                 .orElseThrow(() -> new ServiceException(Errors.ORDER_NOT_FOUND));
-        if (order.getOrderItems().get(0).getProduct().getId() != 0) {
-            savedOrder.getOrderItems().get(0).setProduct(order.getOrderItems().get(0).getProduct());
+
+        OrderItem orderItem = order.getOrderItems().get(0);
+        OrderItem savedOrderItem = savedOrder.getOrderItems().get(0);
+        if (orderItem.getProduct().getId() != 0) {
+            savedOrderItem.setProduct(orderItem.getProduct());
         }
-        if (order.getOrderItems().get(0).getProductQty() != 0) {
-            savedOrder.getOrderItems().get(0).setProductQty(order.getOrderItems().get(0).getProductQty());
+        if (orderItem.getProductQty() != 0) {
+            savedOrderItem.setProductQty(orderItem.getProductQty());
         }
 
+        savedOrder.getOrderItems().clear();
+        savedOrder.getOrderItems().add(savedOrderItem);
         savedOrder.setUpdated(userName);
         savedOrder.setShippingAddress(order.getShippingAddress());
         savedOrder.setDescription(order.getDescription());

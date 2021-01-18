@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div>
+    <h4>Hello, <b th:text = "${token.user.firstName}"></b></h4>
+    <p>You forgot confirm account on our site.</p>
+    <p>Your confirm link work to <b th:text = "${date}"></b></p>
+
+</div>
+<div>
+    <p>Please click on confirm link</p>
+</div>
+<div>
+    <p><a th:href=" ${tokenUrl}">Your Link for confirm</a></p>
+</div>
+
+</body>
+</html>

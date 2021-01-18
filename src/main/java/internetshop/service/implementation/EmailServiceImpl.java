@@ -47,4 +47,25 @@ public class EmailServiceImpl implements EmailService {
 
         javaMailSender.send(mimeMessage);
     }
+
+    @Override
+    public void remindAboutConfirmRegistrationMail(VerificationToken verificationToken) throws MessagingException {
+        Context context = new Context();
+        context.setVariable("token", verificationToken);
+        StringBuilder formatUrl = new StringBuilder();
+        context.setVariable("tokenUrl", formatUrl.append(url).append("/confirm/")
+                .append(verificationToken.getToken()).toString());
+        StringBuilder formatTime = new StringBuilder();
+        context.setVariable("date",  formatTime.append(verificationToken.getExpiryDate().getHour()).append(":").append(verificationToken.getExpiryDate().getMinute()));
+
+        String process = templateEngine.process("email-template/remind-confirm-registration", context);
+
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+        helper.setSubject("Hello " + verificationToken.getUser().getFirstName());
+        helper.setText(process, true);
+        helper.setTo(verificationToken.getUser().getEmail());
+
+        javaMailSender.send(mimeMessage);
+    }
 }

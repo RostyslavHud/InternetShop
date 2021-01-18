@@ -2,7 +2,6 @@ package internetshop.service;
 
 import internetshop.exception.ServiceException;
 import internetshop.model.User;
-import internetshop.model.VerificationToken;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -16,4 +15,6 @@ public interface UserService {
     void addNewUser(User user) throws ServiceException, MessagingException;
 
     void confirmRegistration(String token) throws ServiceException;
+
+    void deleteById(Long id);
 }
