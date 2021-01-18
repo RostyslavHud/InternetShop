@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public class ServiceException extends Exception {
 
-    private Errors errors;
+    private final Errors errors;
     public ServiceException(Errors errors) {
         super(errors.getMessage());
         this.errors = errors;

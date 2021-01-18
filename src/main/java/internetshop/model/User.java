@@ -54,9 +54,6 @@ public class User {
     @Column(name = "active")
     private boolean active;
 
-    @Column(name = "active_code")
-    private String activeCode;
-
     @Column(name = "registration_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime registrationDate;
@@ -64,5 +61,10 @@ public class User {
     @AssertFalse(message = "Password and Confirm password can be same")
     private boolean isConfirmedPassword() {
         return !this.password.equals(this.getConfirmPassword());
+    }
+
+    public User() {
+        super();
+        this.active = false;
     }
 }
