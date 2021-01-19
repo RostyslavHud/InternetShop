@@ -28,12 +28,7 @@ function update_order(){
     var checkedValues = Array.from(selectedCheckBoxes).map(cb => cb.value);
 
     let order = {
-        orderItems:[{
-            product:{
-                id: 0,
-            },
-            productQty: $("#product_qty").val(),
-        },],
+        orderItems:[],
         orderNumber: $("#order_number").val(),
         shippingAddress: $("#shipping_address").val(),
         description: $("#description").val(),
@@ -58,8 +53,14 @@ function update_order(){
         dataType: 'json',
         contentType: 'application/json',
         data: JSON.stringify(order),
-        success: function (){
-            show_orders();
+        success: function (data){
+            if (data.messages != null) {
+                if (data.messages.shippingAddress != null) {
+                    $("#shipping_address_error").html(data.messages.shippingAddress);
+                }else{
+                    $("#shipping_address_error").html("");
+                }
+            }
         }
     })
 }
@@ -83,12 +84,7 @@ function send_order(){
     var checkedValues = Array.from(selectedCheckBoxes).map(cb => cb.value);
 
     let order = {
-        orderItems:[{
-            product:{
-                id: 0,
-            },
-            productQty: $("#product_qty").val(),
-        },],
+        orderItems:[],
         shippingAddress: $("#shipping_address").val(),
         description: $("#description").val(),
     };
@@ -109,8 +105,19 @@ function send_order(){
         dataType: 'json',
         contentType: 'application/json',
         data: JSON.stringify(order),
-        success: function (){
-            show_orders();
+        success: function (data){
+            if (data.messages != null) {
+                if (data.messages.shippingAddress != null) {
+                    $("#shipping_address_error").html(data.messages.shippingAddress);
+                }else{
+                    $("#shipping_address_error").html("");
+                }
+                if (data.messages.orderItemsEmpty != null) {
+                    $("#order_items_error").html(data.messages.orderItemsEmpty);
+                }else {
+                    $("#order_items_error").html("");
+                }
+            }
         }
     })
 

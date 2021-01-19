@@ -34,6 +34,7 @@
                 <p>Order Number: <input class="form-control" th:field="*{orderNumber}" id="order_number" disabled/></p>
                 <p>Order Status: <input class="form-control" th:field="*{status}" id="order_status" disabled></p>
                 <p>Shipping address: <input class="form-control" type="text" id="shipping_address" th:field="*{shippingAddress}"/></p>
+                <p id="shipping_address_error" class="text-danger"></p>
                 <p>Description: <input class="form-control" id="description" th:field="*{description}"/></p>
                 <p>Your product: </p>
                 <table>
