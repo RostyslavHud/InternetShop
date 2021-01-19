@@ -47,6 +47,9 @@ public class Order {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "price")
+    private double price;
+
     @Column(name = "updated")
     private String updated;
 }

@@ -31,8 +31,8 @@ public class UserScheduler {
         List<VerificationToken> verificationTokens = verificationTokenService.findAllByNotExpireDate();
         if (!verificationTokens.isEmpty()) {
             for (VerificationToken token : verificationTokens) {
-                log.error(String.valueOf(token.getExpiryDate().minusHours(LocalDateTime.now().getHour()).minusMinutes(LocalDateTime.now().getMinute()).getHour()));
-                int hoursLost = token.getExpiryDate().minusHours(LocalDateTime.now().getHour()).minusMinutes(LocalDateTime.now().getMinute()).getHour();
+                int hoursLost = token.getExpiryDate().minusHours(LocalDateTime.now().getHour())
+                                                     .minusMinutes(LocalDateTime.now().getMinute()).getHour();
                 if (hoursLost < 1 && !token.getUser().isActive()) {
                     emailService.remindAboutConfirmRegistrationMail(token);
                 }

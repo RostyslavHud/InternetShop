@@ -68,6 +68,12 @@ public class OrderServiceImpl implements OrderService {
         order.setUser(userRepository.findByName(userName));
         order.setDate(LocalDateTime.now());
         order.setStatus(OrderStatus.CREATED);
+        double price = 0;
+        for (OrderItem orderItem : order.getOrderItems()) {
+            price += orderItem.getProductQty() * productRepository.findById(orderItem.getProduct().getId())
+                              .orElseThrow(() -> new ServiceException(Errors.PRODUCT_NOT_FOUND)).getPrice();
+        }
+        order.setPrice(price);
         orderRepository.save(order);
     }
 
@@ -82,17 +88,15 @@ public class OrderServiceImpl implements OrderService {
         Order savedOrder = orderRepository.findOrderByOrderNumber(order.getOrderNumber())
                 .orElseThrow(() -> new ServiceException(Errors.ORDER_NOT_FOUND));
 
-        OrderItem orderItem = order.getOrderItems().get(0);
-        OrderItem savedOrderItem = savedOrder.getOrderItems().get(0);
-        if (orderItem.getProduct().getId() != 0) {
-            savedOrderItem.setProduct(orderItem.getProduct());
+        if (order.getOrderItems().get(0).getProduct().getId() > 0) {
+            savedOrder.setOrderItems(order.getOrderItems());
+            double price = 0;
+            for (OrderItem orderItem : savedOrder.getOrderItems()) {
+                price += orderItem.getProductQty() * productRepository.findById(orderItem.getProduct().getId())
+                        .orElseThrow(() -> new ServiceException(Errors.PRODUCT_NOT_FOUND)).getPrice();
+            }
+            savedOrder.setPrice(price);
         }
-        if (orderItem.getProductQty() != 0) {
-            savedOrderItem.setProductQty(orderItem.getProductQty());
-        }
-
-        savedOrder.getOrderItems().clear();
-        savedOrder.getOrderItems().add(savedOrderItem);
         savedOrder.setUpdated(userName);
         savedOrder.setShippingAddress(order.getShippingAddress());
         savedOrder.setDescription(order.getDescription());

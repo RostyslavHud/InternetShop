@@ -1,14 +1,20 @@
 function show_products(){
     $.get('/v1/products', function (data){
-        let select = "<select><option value='0'>None</optiton>";
 
+        let table = "<table id='product_list' border = '1'> <tr><th scope=\"col\">Product name</th><th>Product price</th>" +
+        "<th>QTY</th> <th></th>";
         for (i = 0; i < data.length; i++){
-            select = select + "<option value='"+ data[i].id +"'>"+ data[i].name +"</option>"
+            table = table + "<tr scope=\"row\">" +
+                "<td>" + data[i].name + "</td>" +
+                "<td>" + data[i].price + "</td>" +
+                "<td><input id = 'qty" + data[i].id + "' value='1'/></td>" +
+                "<td><input class='checkbox' value='" + data[i].id + "' type='checkbox'></td>" +
+                "</tr>"
         }
 
-        select = select + "</select>"
+        table = table + "</table>"
 
-        $("#products").html(select)
+        $("#products").html(table)
     })
 }
 

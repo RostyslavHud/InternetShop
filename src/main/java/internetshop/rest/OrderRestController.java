@@ -33,6 +33,7 @@ public class OrderRestController {
 
     @PostMapping
     public Order createOrder(@RequestBody Order order, @AuthenticationPrincipal UserDetails userDetails) throws ServiceException {
+        log.error(order.toString());
         orderService.add(order, userDetails.getUsername());
         return order;
     }
