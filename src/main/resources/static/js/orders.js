@@ -60,6 +60,8 @@ function update_order(){
                 }else{
                     $("#shipping_address_error").html("");
                 }
+            }else {
+                window.location.href = '/order';
             }
         }
     })
@@ -117,6 +119,8 @@ function send_order(){
                 }else {
                     $("#order_items_error").html("");
                 }
+            }else {
+                window.location.href = '/order';
             }
         }
     })

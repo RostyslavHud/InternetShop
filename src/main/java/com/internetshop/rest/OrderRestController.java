@@ -9,6 +9,7 @@ import com.internetshop.service.OrderService;
 import com.internetshop.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +52,7 @@ public class OrderRestController {
     }
 
     @PutMapping("/{id}")
-    public UpdatedOrderDTO updateOrder(@PathVariable Long id, @RequestBody UpdatedOrderDTO updatedOrderDTO,
+    public UpdatedOrderDTO updateOrder(@PathVariable Long id, @Valid @RequestBody UpdatedOrderDTO updatedOrderDTO,
                                        @AuthenticationPrincipal UserDetails userDetails) throws ServiceException {
 
         orderService.update(orderMapper.updatedOrderToOrder(updatedOrderDTO), userDetails.getUsername());
