@@ -2,7 +2,7 @@ package com.internetshop.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.internetshop.enums.OrderStatus;
-import com.internetshop.model.OrderItem;
+import com.internetshop.mysqlModel.OrderItem;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +10,8 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 public class SimpleOrderDTO {
 

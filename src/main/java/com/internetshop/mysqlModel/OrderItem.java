@@ -1,5 +1,6 @@
-package com.internetshop.model;
+package com.internetshop.mysqlModel;
 
+import com.internetshop.mongoModel.Product;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,10 +15,12 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @Column(name = "product_id")
+    private String productId;
 
     @Column(name = "product_qty")
     private int productQty;
+
+    @Transient
+    private Product product;
 }

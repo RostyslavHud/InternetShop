@@ -1,0 +1,36 @@
+version: "3.1"
+services:
+
+  mysqldb:
+    image: mysql:latest
+    container_name: mysql-db
+    networks:
+      - internetshop-mysqldb
+    environment:
+       - MYSQL_ROOT_PASSWORD=root
+       - MYSQL_DATABASE=internetshopdb
+       - MYSQL_USER=ros
+       - MYSQL_PASSWORD=Qwerty12
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongo-db
+    environment:
+       - MONGO_INITDB_ROOT_USERNAME=root
+       - MONGO_INITDB_ROOT_PASSWORD=root
+       - MONGO_INITDB_DATABASE=internetshopdb
+
+  internetshop:
+    image: internetshop
+    container_name: internetshop
+    ports:
+      - 8080:8080
+    networks:
+      - internetshop-mysqldb
+    depends_on:
+      - mysqldb
+
+
+networks:
+  internetshop-mysqldb:
+    driver: bridge

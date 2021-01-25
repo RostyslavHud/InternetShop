@@ -1,6 +1,6 @@
-package com.internetshop.repository;
+package com.internetshop.mysqlRepository;
 
-import com.internetshop.model.User;
+import com.internetshop.mysqlModel.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

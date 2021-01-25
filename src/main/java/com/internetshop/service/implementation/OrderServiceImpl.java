@@ -2,16 +2,15 @@ package com.internetshop.service.implementation;
 
 import com.internetshop.enums.Errors;
 import com.internetshop.enums.Role;
-import com.internetshop.model.Order;
+import com.internetshop.mysqlModel.Order;
 import com.internetshop.enums.OrderStatus;
-import com.internetshop.model.OrderItem;
-import com.internetshop.model.User;
-import com.internetshop.repository.OrderRepository;
-import com.internetshop.repository.ProductRepository;
-import com.internetshop.repository.UserRepository;
+import com.internetshop.mysqlModel.OrderItem;
+import com.internetshop.mysqlModel.User;
+import com.internetshop.mysqlRepository.OrderRepository;
+import com.internetshop.mongoRepository.ProductRepository;
+import com.internetshop.mysqlRepository.UserRepository;
 import com.internetshop.service.OrderService;
 import com.internetshop.exception.ServiceException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service("orderService")
-@Slf4j
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
@@ -37,7 +35,12 @@ public class OrderServiceImpl implements OrderService {
         if (id < 1) {
             throw new ServiceException(Errors.INCORRECT_ID);
         }
-        return orderRepository.findById(id).orElseThrow(() -> new ServiceException(Errors.ORDER_NOT_FOUND));
+        Order order = orderRepository.findById(id).orElseThrow(() -> new ServiceException(Errors.ORDER_NOT_FOUND));
+        for (OrderItem orderItem : order.getOrderItems()) {
+            orderItem.setProduct(productRepository.findById(orderItem.getProductId())
+                    .orElseThrow(() -> new ServiceException(Errors.PRODUCT_NOT_FOUND)));
+        }
+        return order;
     }
 
     @Override
@@ -70,8 +73,8 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(OrderStatus.CREATED);
         double price = 0;
         for (OrderItem orderItem : order.getOrderItems()) {
-            price += orderItem.getProductQty() * productRepository.findById(orderItem.getProduct().getId())
-                              .orElseThrow(() -> new ServiceException(Errors.PRODUCT_NOT_FOUND)).getPrice();
+            price += orderItem.getProductQty() * productRepository.findById(orderItem.getProductId())
+                    .orElseThrow(() -> new ServiceException(Errors.PRODUCT_NOT_FOUND)).getPrice();
         }
         order.setPrice(price);
         orderRepository.save(order);
@@ -92,7 +95,7 @@ public class OrderServiceImpl implements OrderService {
             savedOrder.setOrderItems(order.getOrderItems());
             double price = 0;
             for (OrderItem orderItem : savedOrder.getOrderItems()) {
-                price += orderItem.getProductQty() * productRepository.findById(orderItem.getProduct().getId())
+                price += orderItem.getProductQty() * productRepository.findById(orderItem.getProductId())
                         .orElseThrow(() -> new ServiceException(Errors.PRODUCT_NOT_FOUND)).getPrice();
             }
             savedOrder.setPrice(price);

@@ -54,7 +54,7 @@ public class PageController {
     }
 
     @GetMapping("/confirm/{token}")
-    public String confirmRegistration(@PathVariable String token) throws ServiceException {
+    public String getConfirmRegistration(@PathVariable String token) throws ServiceException {
         userService.confirmRegistration(token);
         return "account/success/confirm-registration";
     }
@@ -62,5 +62,10 @@ public class PageController {
     @GetMapping("/success-registration")
     public String getSuccessRegistrationPage() {
         return "account/success/registration";
+    }
+
+    @GetMapping("/new-product")
+    public String getNewProductPage() {
+        return "product/create-product";
     }
 }

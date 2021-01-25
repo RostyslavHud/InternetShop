@@ -4,12 +4,10 @@ import com.internetshop.dto.CreationOrderDTO;
 import com.internetshop.dto.SimpleOrderDTO;
 import com.internetshop.dto.UpdatedOrderDTO;
 import com.internetshop.mapper.OrderMapper;
-import com.internetshop.model.Order;
+import com.internetshop.mysqlModel.Order;
 import com.internetshop.service.OrderService;
 import com.internetshop.exception.ServiceException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +17,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/orders")
-@Slf4j
 public class OrderRestController {
 
     private final OrderService orderService;
@@ -33,7 +30,6 @@ public class OrderRestController {
 
     @GetMapping
     public List<SimpleOrderDTO> getOrders(@AuthenticationPrincipal UserDetails userDetails) throws ServiceException {
-
         return orderMapper.orderToSimpleOrder(orderService.getAll(userDetails.getUsername()));
     }
 

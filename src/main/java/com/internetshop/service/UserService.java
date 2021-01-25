@@ -1,7 +1,7 @@
 package com.internetshop.service;
 
 import com.internetshop.exception.ServiceException;
-import com.internetshop.model.User;
+import com.internetshop.mysqlModel.User;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;

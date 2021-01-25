@@ -2,13 +2,12 @@ package com.internetshop.service.implementation;
 
 import com.internetshop.enums.Errors;
 import com.internetshop.enums.Role;
-import com.internetshop.model.User;
-import com.internetshop.model.VerificationToken;
-import com.internetshop.repository.UserRepository;
+import com.internetshop.mysqlModel.User;
+import com.internetshop.mysqlModel.VerificationToken;
+import com.internetshop.mysqlRepository.UserRepository;
 import com.internetshop.exception.ServiceException;
-import com.internetshop.repository.VerificationTokenRepository;
+import com.internetshop.mysqlRepository.VerificationTokenRepository;
 import com.internetshop.service.UserService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,6 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service("userService")
-@Slf4j
 public class UserServiceImpl implements UserService {
 
     @Autowired

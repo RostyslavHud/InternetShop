@@ -1,10 +1,12 @@
 package com.internetshop.service;
 
 import com.internetshop.exception.ServiceException;
-import com.internetshop.model.Order;
+import com.internetshop.mysqlModel.Order;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public interface OrderService {
     Order getById(Long id) throws ServiceException;
 

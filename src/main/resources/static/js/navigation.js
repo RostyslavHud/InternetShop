@@ -32,8 +32,17 @@ function show_user() {
                 "                    <a class=\"nav-link\" href=\"/order\">Order<span class=\"sr-only\"></span></a>\n" +
                 "                </li>\n" +
                 "            </ul>\n" +
-                "        </div>" +
-                "<div class=\"collapse navbar-collapse\" id=\"navbarLogout\" hidden>\n" +
+                "        </div>";
+            if (data.role === "ADMIN") {
+                button = button + "<div class=\"collapse navbar-collapse\" id=\"navbarLogout\" hidden>\n" +
+                    "            <ul class=\"navbar-nav mr-auto\">\n" +
+                    "                <li class=\"nav-item active\">\n" +
+                    "                    <a class=\"nav-link\" href=\"/new-product\">Add Product<span class=\"sr-only\"></span></a>\n" +
+                    "                </li>\n" +
+                    "            </ul>\n" +
+                    "        </div>\n";
+            }
+            button = button + "<div class=\"collapse navbar-collapse\" id=\"navbarLogout\" hidden>\n" +
                 "            <ul class=\"navbar-nav mr-auto\">\n" +
                 "                <li class=\"nav-item active\">\n" +
                 "                    <a class=\"nav-link\" href=\"/logout\">(" + data.name + ") Logout<span class=\"sr-only\"></span></a>\n" +

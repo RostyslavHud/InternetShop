@@ -21,29 +21,30 @@
 <div class="create_order_container">
     <div class="row">
         <div class="col">
+        </div>
+        <div class="col-5">
             <H4>New Order Form</H4>
         </div>
-        <div class="col-6"></div>
         <div class="col"></div>
     </div>
     <div class="row">
-        <div class="col">
-
-                <div class="form-order">
-                    <p>Shipping address: <input class="form-control" type="text" id="shipping_address"/></p>
-                    <p id="shipping_address_error" class="text-danger"></p>
-                    <p>Description: <input class="form-control" type="text" id="description"/></p>
-                    <p>Please select products: </p>
-                    <table id="products"></table>
-                    <p id="order_items_error" class="text-danger"></p>
-
-                    <p><a class="btn btn-secondary" href="#" role="button" onclick="send_order()">Create new order</a>
-                        <a class="btn btn-secondary" href="/order" role="button">Back</a></p>
-                </div>
-            </form>
-        </div>
-        <div class="col-5"></div>
         <div class="col"></div>
+        <div class="col-5">
+            <div class="form-order">
+                <p>Shipping address: <input class="form-control" type="text" id="shipping_address"/></p>
+                <p id="shipping_address_error" class="text-danger"></p>
+                <p>Description: <input class="form-control" type="text" id="description"/></p>
+                <p>Please select products: </p>
+                <select id="category_list"></select>
+                <p id="order_items_error" class="text-danger"></p>
+                <p><a class="btn btn-secondary" href="#" role="button" onclick="send_order()">Create new order</a>
+                    <a class="btn btn-secondary" href="/order" role="button">Back</a></p>
+            </div>
+        </div>
+        <div class="col"></div>
+    </div>
+    <div class="col">
+        <table class='table' id="product_list"></table>
     </div>
 </div>
 

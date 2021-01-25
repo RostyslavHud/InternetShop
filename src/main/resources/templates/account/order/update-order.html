@@ -18,27 +18,30 @@
     </nav>
 </div>
 
-<div class="create_order_container">
+<div class="update_order_container">
     <div class="row">
-        <div class="col">
+        <div class="col"></div>
+        <div class="col-5">
             <H4>Update Order Form</H4>
         </div>
-        <div class="col-6"></div>
         <div class="col"></div>
     </div>
     <div class="row">
-        <div class="col">
-
+        <div class="col"></div>
+        <div class="col-5">
             <div class="form-order" th:object="${order}">
                 <input hidden th:field="*{id}" id="order_id"/>
                 <p>Order Number: <input class="form-control" th:field="*{orderNumber}" id="order_number" disabled/></p>
                 <p>Order Status: <input class="form-control" th:field="*{status}" id="order_status" disabled></p>
-                <p>Shipping address: <input class="form-control" type="text" id="shipping_address" th:field="*{shippingAddress}"/></p>
+                <p>Shipping address: <input class="form-control" type="text" id="shipping_address"
+                                            th:field="*{shippingAddress}"/></p>
                 <p id="shipping_address_error" class="text-danger"></p>
                 <p>Description: <input class="form-control" id="description" th:field="*{description}"/></p>
                 <p>Your product: </p>
                 <table>
-                    <th>Product name</th><th>Product price</th><th>Product qty</th>
+                    <th>Product name</th>
+                    <th>Product price</th>
+                    <th>Product qty</th>
                     <tr th:each="orderItem : ${order.orderItems}">
                         <td th:text="${orderItem.product.name}"></td>
                         <td th:text="${orderItem.product.price}"></td>
@@ -47,16 +50,17 @@
                 </table>
 
                 <p></p>
-                <p>Please select new product. Old products will be deleted and replaced new products. If you won't change product don't select new product</p>
-                <table id="products"></table>
-
+                <p>Please select new product. Old products will be deleted and replaced new products. If you won't
+                    change product don't select new product</p>
+                <select id="category_list"></select>
                 <p><a class="btn btn-secondary" href="#" role="button" onclick="update_order()">Update order</a>
                     <a class="btn btn-secondary" href="/order" role="button">Back</a></p>
             </div>
-            </form>
         </div>
-        <div class="col-5"></div>
         <div class="col"></div>
+    </div>
+    <div class="row">
+        <table class='table' id="product_list"></table>
     </div>
 </div>
 
