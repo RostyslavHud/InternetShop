@@ -12,6 +12,7 @@
 .idea/**/shelf
 .idea/
 InternetShop.iml
+InternetShop.ipr
 
 # Generated files
 .idea/**/contentModel.xml
