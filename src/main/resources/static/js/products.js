@@ -53,7 +53,7 @@ function send_product() {
 
     for (i = 0; i < checkedValues.length; i++) {
         let category = {
-            name: checkedValues[i]
+            id: checkedValues[i]
         }
         product.categories[i] = category;
     }

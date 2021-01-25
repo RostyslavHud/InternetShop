@@ -29,3 +29,46 @@ VALUES ('Category 4');
 
 INSERT categories(category_name)
 VALUES ('Category 5');
+
+INSERT categories(category_name)
+VALUES ('Category 6');
+
+INSERT categories(category_name)
+VALUES ('Category 7');
+
+INSERT categories(category_name)
+VALUES ('Category 8');
+
+INSERT categories(category_name)
+VALUES ('Category 9');
+
+INSERT categories(category_name)
+VALUES ('Category 10');
+INSERT categories(category_name)
+VALUES ('Category 11');
+
+INSERT categories(category_name)
+VALUES ('Category 12');
+
+INSERT categories(category_name)
+VALUES ('Category 13');
+
+INSERT categories(category_name)
+VALUES ('Category 14');
+
+INSERT categories(category_name)
+VALUES ('Category 15');
+INSERT categories(category_name)
+VALUES ('Category 16');
+
+INSERT categories(category_name)
+VALUES ('Category 17');
+
+INSERT categories(category_name)
+VALUES ('Category 18');
+
+INSERT categories(category_name)
+VALUES ('Category 19');
+
+INSERT categories(category_name)
+VALUES ('Category 20');

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
 @Controller
 @RequestMapping
 public class PageController {
@@ -21,15 +22,14 @@ public class PageController {
     @Autowired
     UserService userService;
 
+
     @GetMapping("/login")
     public String getLoginPage() {
         return "login";
     }
 
     @GetMapping("/")
-    public String getHomePage() {
-        return "index";
-    }
+    public String getHomePage() { return "index"; }
 
     @GetMapping("/order")
     public String getOrdersPage() {

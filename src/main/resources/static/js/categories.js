@@ -5,7 +5,7 @@ function show_categories() {
         for (i = 0; i < data.length; i++) {
             table = table + "<tr scope=\"row\">" +
                 "<td>" + data[i].name + "</td>" +
-                "<td><input class='checkbox' value='" + data[i].name + "' type='checkbox'></td>" +
+                "<td><input class='checkbox' value='" + data[i].id + "' type='checkbox'></td>" +
                 "</tr>"
         }
 

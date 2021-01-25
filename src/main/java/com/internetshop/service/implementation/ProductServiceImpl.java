@@ -10,6 +10,7 @@ import com.internetshop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service("productService")
@@ -39,6 +40,12 @@ public class ProductServiceImpl implements ProductService {
         if (product == null) {
             throw new ServiceException(Errors.EMPTY_PRODUCT);
         }
+        List<Category> categories = new ArrayList<>();
+        for (Category category : product.getCategories()) {
+            categories.add(categoryRepository.findById(category.getId())
+                    .orElseThrow(() -> new ServiceException(Errors.CATEGORY_NOT_FOUND)));
+        }
+        product.setCategories(categories);
         productRepository.save(product);
     }
 }
