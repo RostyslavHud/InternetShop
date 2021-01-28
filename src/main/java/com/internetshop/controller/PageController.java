@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
 @Controller
 @RequestMapping
 public class PageController {
@@ -21,15 +22,14 @@ public class PageController {
     @Autowired
     UserService userService;
 
+
     @GetMapping("/login")
     public String getLoginPage() {
         return "login";
     }
 
     @GetMapping("/")
-    public String getHomePage() {
-        return "index";
-    }
+    public String getHomePage() { return "index"; }
 
     @GetMapping("/order")
     public String getOrdersPage() {
@@ -54,7 +54,7 @@ public class PageController {
     }
 
     @GetMapping("/confirm/{token}")
-    public String confirmRegistration(@PathVariable String token) throws ServiceException {
+    public String getConfirmRegistration(@PathVariable String token) throws ServiceException {
         userService.confirmRegistration(token);
         return "account/success/confirm-registration";
     }
@@ -62,5 +62,10 @@ public class PageController {
     @GetMapping("/success-registration")
     public String getSuccessRegistrationPage() {
         return "account/success/registration";
+    }
+
+    @GetMapping("/new-product")
+    public String getNewProductPage() {
+        return "product/create-product";
     }
 }

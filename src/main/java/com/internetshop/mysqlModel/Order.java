@@ -1,4 +1,4 @@
-package com.internetshop.model;
+package com.internetshop.mysqlModel;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.internetshop.enums.OrderStatus;

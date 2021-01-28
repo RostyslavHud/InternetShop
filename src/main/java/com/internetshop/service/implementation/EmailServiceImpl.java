@@ -1,6 +1,6 @@
 package com.internetshop.service.implementation;
 
-import com.internetshop.model.VerificationToken;
+import com.internetshop.mysqlModel.VerificationToken;
 import com.internetshop.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,7 +35,7 @@ public class EmailServiceImpl implements EmailService {
         context.setVariable("token", verificationToken);
         StringBuilder formatUrl = new StringBuilder();
         context.setVariable("tokenUrl", formatUrl.append(url).append("/confirm/")
-                                                       .append(verificationToken.getToken()).toString());
+                .append(verificationToken.getToken()).toString());
 
         String process = templateEngine.process("email-template/confirm-registration", context);
 
@@ -56,7 +56,8 @@ public class EmailServiceImpl implements EmailService {
         context.setVariable("tokenUrl", formatUrl.append(url).append("/confirm/")
                 .append(verificationToken.getToken()).toString());
         StringBuilder formatTime = new StringBuilder();
-        context.setVariable("date",  formatTime.append(verificationToken.getExpiryDate().getHour()).append(":").append(verificationToken.getExpiryDate().getMinute()));
+        context.setVariable("date", formatTime.append(verificationToken.getExpiryDate().getHour()).append(":")
+                .append(verificationToken.getExpiryDate().getMinute()));
 
         String process = templateEngine.process("email-template/remind-confirm-registration", context);
 

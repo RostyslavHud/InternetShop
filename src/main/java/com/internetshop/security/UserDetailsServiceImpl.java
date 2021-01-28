@@ -1,7 +1,7 @@
 package com.internetshop.security;
 
-import com.internetshop.model.User;
-import com.internetshop.repository.UserRepository;
+import com.internetshop.mysqlModel.User;
+import com.internetshop.mysqlRepository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

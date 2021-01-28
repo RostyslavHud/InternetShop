@@ -3,7 +3,7 @@ package com.internetshop.mapper;
 import com.internetshop.dto.CreationOrderDTO;
 import com.internetshop.dto.SimpleOrderDTO;
 import com.internetshop.dto.UpdatedOrderDTO;
-import com.internetshop.model.Order;
+import com.internetshop.mysqlModel.Order;
 import org.mapstruct.Mapper;
 
 import java.util.List;

@@ -2,7 +2,7 @@ package com.internetshop.mapper;
 
 import com.internetshop.dto.RegistrationUserDTO;
 import com.internetshop.dto.SimpleUserDTO;
-import com.internetshop.model.User;
+import com.internetshop.mysqlModel.User;
 import org.mapstruct.Mapper;
 
 

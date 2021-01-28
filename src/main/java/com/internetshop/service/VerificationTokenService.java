@@ -1,6 +1,6 @@
 package com.internetshop.service;
 
-import com.internetshop.model.VerificationToken;
+import com.internetshop.mysqlModel.VerificationToken;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

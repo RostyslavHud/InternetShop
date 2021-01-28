@@ -14,10 +14,13 @@ public enum Errors {
     USER_NOT_FOUND(3404, "User not found", "userClass"),
 
     PRODUCT_NOT_FOUND(4404, "Order not found", "productClass"),
+    EMPTY_PRODUCT(4405, "User can't be empty", "productClass"),
 
     EMPTY_TOKEN(5405, "Token can't be empty", "token"),
     INCORRECT_TOKEN(5406, "You fill incorrect token", "token"),
-    EXPIRY_DATE_TOKEN(5407, "Time for user activation is over", "token");
+    EXPIRY_DATE_TOKEN(5407, "Time for user activation is over", "token"),
+
+    CATEGORY_NOT_FOUND(6404, "Category not found", "categoryClass");
 
 
     private final int code;

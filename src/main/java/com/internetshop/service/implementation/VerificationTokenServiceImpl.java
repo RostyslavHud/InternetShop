@@ -1,7 +1,7 @@
 package com.internetshop.service.implementation;
 
-import com.internetshop.model.VerificationToken;
-import com.internetshop.repository.VerificationTokenRepository;
+import com.internetshop.mysqlModel.VerificationToken;
+import com.internetshop.mysqlRepository.VerificationTokenRepository;
 import com.internetshop.service.VerificationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

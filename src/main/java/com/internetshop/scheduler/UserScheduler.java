@@ -1,10 +1,9 @@
 package com.internetshop.scheduler;
 
-import com.internetshop.model.VerificationToken;
+import com.internetshop.mysqlModel.VerificationToken;
 import com.internetshop.service.EmailService;
 import com.internetshop.service.UserService;
 import com.internetshop.service.VerificationTokenService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -14,7 +13,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
-@Slf4j
 public class UserScheduler {
 
     @Autowired
@@ -32,7 +30,7 @@ public class UserScheduler {
         if (!verificationTokens.isEmpty()) {
             for (VerificationToken token : verificationTokens) {
                 int hoursLost = token.getExpiryDate().minusHours(LocalDateTime.now().getHour())
-                                                     .minusMinutes(LocalDateTime.now().getMinute()).getHour();
+                        .minusMinutes(LocalDateTime.now().getMinute()).getHour();
                 if (hoursLost < 1 && !token.getUser().isActive()) {
                     emailService.remindAboutConfirmRegistrationMail(token);
                 }

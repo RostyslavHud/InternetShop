@@ -1,4 +1,4 @@
-package com.internetshop.model;
+package com.internetshop.mysqlModel;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -22,7 +22,7 @@ public class VerificationToken {
     @NotBlank(message = "Token is mandatory")
     private String token;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
