@@ -4,7 +4,6 @@ import com.internetshop.dto.CreationOrderDTO;
 import com.internetshop.dto.SimpleOrderDTO;
 import com.internetshop.dto.UpdatedOrderDTO;
 import com.internetshop.mapper.OrderMapper;
-import com.internetshop.mongoModel.Product;
 import com.internetshop.mysqlModel.Order;
 import com.internetshop.service.OrderService;
 import com.internetshop.exception.ServiceException;
@@ -14,6 +13,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -39,8 +41,12 @@ public class OrderRestController {
     @ApiResponse(responseCode = "200", description = "Get all orders for customer. " +
                             "Simple customers see just their own orders. Admin see all orders",
             content = {@Content(mediaType = "application/json", schema = @Schema(implementation = SimpleOrderDTO.class))})
-    public List<SimpleOrderDTO> getOrders(@Parameter(description = "Authorized customer") @AuthenticationPrincipal UserDetails userDetails) throws ServiceException {
-        return orderMapper.orderToSimpleOrder(orderService.getAll(userDetails.getUsername()));
+    public Page<SimpleOrderDTO> getOrders(@Parameter(description = "Authorized customer") @AuthenticationPrincipal UserDetails userDetails,
+                                          @Parameter (description = "Parameters for pagination and sorting") Pageable pageable) throws ServiceException {
+
+        Page<Order> pageOrders = orderService.getAll(userDetails.getUsername(), pageable);
+        List<SimpleOrderDTO> simpleOrderDTOS = orderMapper.orderToSimpleOrder(pageOrders.getContent());
+        return new PageImpl<>(simpleOrderDTOS, pageable, pageOrders.getTotalElements());
     }
 
     @GetMapping("/{id}")

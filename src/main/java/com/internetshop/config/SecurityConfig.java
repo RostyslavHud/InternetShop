@@ -32,15 +32,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/js/**").permitAll()
-                .antMatchers("/account/**").hasAnyAuthority(Role.ADMIN.name(), Role.USER.name())
-                .antMatchers("/registration").permitAll()
-                .antMatchers("/success-registration").permitAll()
+                .antMatchers("/", "/js/**", "/registration", "/success-registration",
+                        "/confirm/**", "/v1-public/**").permitAll()
+
+                .antMatchers("/account/**", "/v1/**").hasAnyAuthority(Role.ADMIN.name(), Role.USER.name())
+
                 .antMatchers("/new-product").hasAnyAuthority(Role.ADMIN.name())
-                .antMatchers("/confirm/**").permitAll()
-                .antMatchers("/v1/**").hasAnyAuthority(Role.ADMIN.name(), Role.USER.name())
-                .antMatchers("/v1-public/**").permitAll()
+
                 .anyRequest()
                 .authenticated()
                 .and()

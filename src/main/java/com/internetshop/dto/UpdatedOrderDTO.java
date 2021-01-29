@@ -17,7 +17,7 @@ public class UpdatedOrderDTO {
 
     private List<OrderItem> orderItems;
 
-    @NotEmpty(message = "Shipping address is mandatory")
+    @NotEmpty(message = "{error.mandatory-shipping-address}")
     private String shippingAddress;
 
     private String description;

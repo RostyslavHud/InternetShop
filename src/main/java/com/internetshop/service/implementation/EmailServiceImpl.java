@@ -13,6 +13,7 @@ import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.Locale;
 
 @Service("emailService")
 public class EmailServiceImpl implements EmailService {
@@ -31,7 +32,8 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendConfirmRegistrationMail(VerificationToken verificationToken) throws MessagingException {
 
-        Context context = new Context();
+        String language = verificationToken.getUser().getLanguage().getName();
+        Context context = new Context(new Locale(language));
         context.setVariable("token", verificationToken);
         StringBuilder formatUrl = new StringBuilder();
         context.setVariable("tokenUrl", formatUrl.append(url).append("/confirm/")
@@ -41,16 +43,19 @@ public class EmailServiceImpl implements EmailService {
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
-        helper.setSubject("Welcome " + verificationToken.getUser().getFirstName());
+        helper.setSubject("text.welcome" + verificationToken.getUser().getFirstName());
         helper.setText(process, true);
         helper.setTo(verificationToken.getUser().getEmail());
 
         javaMailSender.send(mimeMessage);
     }
 
+    @Async
     @Override
     public void remindAboutConfirmRegistrationMail(VerificationToken verificationToken) throws MessagingException {
-        Context context = new Context();
+
+        String language = verificationToken.getUser().getLanguage().getName();
+        Context context = new Context(new Locale(language));
         context.setVariable("token", verificationToken);
         StringBuilder formatUrl = new StringBuilder();
         context.setVariable("tokenUrl", formatUrl.append(url).append("/confirm/")
@@ -63,7 +68,7 @@ public class EmailServiceImpl implements EmailService {
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
-        helper.setSubject("Hello " + verificationToken.getUser().getFirstName());
+        helper.setSubject("text.welcome" + verificationToken.getUser().getFirstName());
         helper.setText(process, true);
         helper.setTo(verificationToken.getUser().getEmail());
 

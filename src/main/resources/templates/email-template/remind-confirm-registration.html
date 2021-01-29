@@ -7,16 +7,16 @@
 <body>
 
 <div>
-    <h4>Hello, <b th:text = "${token.user.firstName}"></b></h4>
-    <p>You forgot confirm account on our site.</p>
-    <p>Your confirm link work to <b th:text = "${date}"></b></p>
+    <h4><b th:text="#{text.hello}">Hello,</b> <b th:text="${token.user.firstName}"></b></h4>
+    <p th:text="#{text.forgot-confirm-registration}">You forgot confirm account on our site.</p>
+    <p><b th:text="#{text.confirm-link-work}">Your confirm link work to</b> <b th:text="${date}"></b></p>
 
 </div>
 <div>
-    <p>Please click on confirm link</p>
+    <p th:text="#{text.click-on-confirm-link}"></p>
 </div>
 <div>
-    <p><a th:href=" ${tokenUrl}">Your Link for confirm</a></p>
+    <p><a th:href=" ${tokenUrl}" th:text="#{text.confirm-link}"></a></p>
 </div>
 
 </body>

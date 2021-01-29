@@ -1,28 +1,3 @@
-function show_orders() {
-    $.get('/v1/orders', function (data) {
-        let table = "<table border = '1'> <tr><th scope=\"col\">Order number</th><th>Order date</th>" +
-            "<th>Customer name</th> <th>Shipping address</th>" +
-            "<th>Description</th><th>Amount</th><th>Order status</th><th>Update BY</th><th></th><th></th></tr>";
-
-        for (i = 0; i < data.length; i++) {
-            table = table + "<tr scope=\"row\"><td>" + data[i].orderNumber + "</td><td>" + data[i].date + "</td>" +
-                "<td>" + data[i].user.name + "</td><td>" + data[i].shippingAddress + "</td>\n" +
-                "<td>" + data[i].description + "</td><td>" + data[i].price + "</td><td>" + data[i].status + "</td>\n" +
-                "<td>" + data[i].updated + "</td>\n" +
-                "<td><form action='/order/update'>\n" +
-                "     <input type='hidden' name='id' value='" + data[i].id + "'/>\n" +
-                "     <button type='submit' class='btn btn-secondary'>Update</button>\n" +
-                "                </form>\n</td>" +
-                "<td><a class='btn btn-secondary' href='/order' role='button' onclick='delete_order(" + data[i].id + ")'>Delete</a></td>" +
-                "</tr>"
-        }
-
-        table = table + "</table>";
-
-        $("#user_orders").html(table)
-    })
-}
-
 function update_order() {
     var selectedCheckBoxes = document.querySelectorAll('input.checkbox:checked');
     var checkedValues = Array.from(selectedCheckBoxes).map(cb => cb.value);
@@ -74,10 +49,6 @@ function delete_order(id) {
         }
     })
 }
-
-$(document).ready(function () {
-    show_orders();
-})
 
 function send_order() {
     var selectedCheckBoxes = document.querySelectorAll('input.checkbox:checked');

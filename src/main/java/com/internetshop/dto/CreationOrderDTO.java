@@ -16,12 +16,12 @@ public class CreationOrderDTO {
 
     private List<OrderItem> orderItems;
 
-    @NotEmpty(message = "Shipping address is mandatory")
+    @NotEmpty(message = "{error.mandatory-shipping-address}")
     private String shippingAddress;
 
     private String description;
 
-    @AssertFalse(message = "You nothing buy")
+    @AssertFalse(message = "{error.product-is-not-selected}")
     public boolean isOrderItemsEmpty() {
         return orderItems.isEmpty();
     }

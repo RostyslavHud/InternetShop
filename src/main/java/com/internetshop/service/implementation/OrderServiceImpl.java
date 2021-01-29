@@ -12,11 +12,11 @@ import com.internetshop.mysqlRepository.UserRepository;
 import com.internetshop.service.OrderService;
 import com.internetshop.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service("orderService")
 public class OrderServiceImpl implements OrderService {
@@ -44,16 +44,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAll(String userName) throws ServiceException {
+    public Page<Order> getAll(String userName, Pageable pageable) throws ServiceException {
         if (userName.equals("")) {
             throw new ServiceException(Errors.EMPTY_USER_NAME);
         }
-        List<Order> orders = new ArrayList<>();
+        Page<Order> orders = null;
         User user = userRepository.findByName(userName);
         if (user.getRole() == Role.USER) {
-            orders = orderRepository.findAllByUserId(user.getId());
+            orders = orderRepository.findAllByUserId(user.getId(), pageable);
         } else if (user.getRole() == Role.ADMIN) {
-            orderRepository.findAll().forEach(orders::add);
+            orders = orderRepository.findAll(pageable);
         }
         return orders;
     }

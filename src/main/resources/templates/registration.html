@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta charset="UTF-8">
@@ -13,49 +13,93 @@
 <body>
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light" id="logB">
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto" id="navbarHome">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/" th:text="#{nav.home}"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto" id="navbarRegistration">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/registration" th:text="#{nav.create-new-account}"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto" id="navbarOrder">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/order" th:text="#{nav.order}"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto" id="navbarProduct">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/new-product" th:text="#{nav.add-product}"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto" id="navbarLogin">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/login" th:text="#{nav.login}"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto" id="navbarLogout">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/logout" th:text="#{nav.logout}"> </a>
+                </li>
+            </ul>
+        </div>
     </nav>
 </div>
 
 <div class="container">
     <form class="form-signin" method="post" action="">
-        <h2 class="form-signin-heading">Registration Form</h2>
+        <h2 class="form-signin-heading" th:text="#{title.registration}"></h2>
         <p>
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" class="form-control" placeholder="Username">
+            <label for="username" th:text="#{field.username}"></label>
+            <input type="text" id="username" name="username" class="form-control" th:placeholder="#{field.username}">
         <p id="username_error" class="text-danger"></p>
         </p>
         <p>
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" class="form-control" placeholder="Password">
+            <label for="password" th:text="#{field.password}"></label>
+            <input type="password" id="password" name="password" class="form-control"
+                   th:placeholder="#{field.password}">
         <p id="password_error" class="text-danger"></p>
         </p>
         <p>
-            <label for="password">Confirm Password</label>
+            <label for="password" th:text="#{field.confirm-password}"></label>
             <input type="password" id="confirm_password" name="confirm_password" class="form-control"
-                   placeholder="Confirm Password">
+                   th:placeholder="#{field.confirm-password}">
         <p id="password_confirm_error" class="text-danger"></p>
         </p>
         <p>
-            <label for="email">Email</label>
-            <input type="text" id="email" name="confirm_password" class="form-control" placeholder="Email">
+            <label for="email" th:text="#{field.email}"></label>
+            <input type="text" id="email" name="confirm_password" class="form-control" th:placeholder="#{field.email}">
         <p id="email_error" class="text-danger"></p>
         </p>
         <p>
-            <label for="first_name">First Name</label>
-            <input type="text" id="first_name" name="first_name" class="form-control" placeholder="First Name">
+            <label for="first_name" th:text="#{field.first-name}"></label>
+            <input type="text" id="first_name" name="first_name" class="form-control"
+                   th:placeholder="#{field.first-name}">
         <p id="first_name_error" class="text-danger"></p>
         </p>
         <p>
-            <label for="last_name">Last Name</label>
-            <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Last Name">
+            <label for="last_name" th:text="#{field.last-name}"></label>
+            <input type="text" id="last_name" name="last_name" class="form-control" th:placeholder="#{field.last-name}">
         <p id="last_name_error" class="text-danger"></p>
         </p>
         <p>
-            <label for="age">Age</label>
-            <input type="text" id="age" name="age" class="form-control" placeholder="Age">
+            <label for="age" th:text="#{field.age}"></label>
+            <input type="text" id="age" name="age" class="form-control" th:placeholder="#{field.age}">
         <p id="age_error" class="text-danger"></p>
         </p>
-        <a class="btn btn-lg btn-secondary btn-block" onclick="send_user()" href="#">Confirm</a>
+        <a class="btn btn-lg btn-secondary btn-block" onclick="send_user()" href="#" th:text="#{button.confirm}"></a>
     </form>
 </div>
 
