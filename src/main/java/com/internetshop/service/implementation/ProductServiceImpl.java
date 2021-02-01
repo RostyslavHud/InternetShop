@@ -8,6 +8,8 @@ import com.internetshop.mysqlModel.Category;
 import com.internetshop.mysqlRepository.CategoryRepository;
 import com.internetshop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,15 +26,10 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public List<Product> getAll() {
-        return productRepository.findAll();
-    }
-
-    @Override
-    public List<Product> getAllByCategoryId(Long id) throws ServiceException {
+    public Page<Product> getAllByCategoryId(Long id, Pageable pageable) throws ServiceException {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(Errors.CATEGORY_NOT_FOUND));
-        return productRepository.findByCategories(category);
+        return productRepository.findByCategories(category, pageable);
     }
 
     @Override

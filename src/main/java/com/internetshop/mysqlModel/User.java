@@ -42,6 +42,10 @@ public class User {
     @Column(name = "active")
     private boolean active;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "language_id")
+    private Language language;
+
     @Column(name = "registration_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime registrationDate;

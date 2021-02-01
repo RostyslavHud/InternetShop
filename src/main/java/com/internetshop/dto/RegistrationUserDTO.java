@@ -7,44 +7,44 @@ import lombok.Setter;
 
 import javax.validation.constraints.*;
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegistrationUserDTO {
 
     @Pattern(regexp = "^[a-z0-9_-]{3,16}$",
-            message = "Name shouldn't have special symbols and it's name should be from 3 to 16 symbols.")
-    @NotEmpty(message = "Name is mandatory")
+            message = "{error.incorrect-name}")
+    @NotEmpty(message = "{error.mandatory-name}")
     private String name;
 
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$",
-            message = "Password should be strong and it should have 1 big letter," +
-                    " 1 small letter and 1 numeral and it's length should be min 8 symbols")
-    @NotEmpty(message = "Password is mandatory")
+            message = "{error.incorrect-password}")
+    @NotEmpty(message = "{error.mandatory-password}")
     private String password;
 
-    @NotBlank(message = "Confirm password is mandatory")
+    @NotBlank(message = "{error.mandatory-confirm-password}")
     private String confirmPassword;
 
     @Pattern(regexp = "^[a-zA-Z]{2,}$",
-            message = "First name name should have only symbols and it's length should be min 2 symbols")
-    @NotBlank(message = "First name is mandatory")
+            message = "{error.incorrect-first-name}")
+    @NotBlank(message = "{error.mandatory-first-name}")
     private String firstName;
 
     @Pattern(regexp = "^[a-zA-Z]{2,}$",
-            message = "Last name should have only symbols and it's length should be min 2 symbols")
-    @NotBlank(message = "Last is mandatory")
+            message = "{error.incorrect-last-name}")
+    @NotBlank(message = "{error.mandatory-last-name}")
     private String lastName;
 
     @Pattern(regexp = "([a-zA-Z0-9]+(?:[._+-][a-zA-Z0-9]+)*)@([a-zA-Z0-9]+(?:[.-][a-zA-Z0-9]+)*[.][a-zA-Z]{2,})",
-            message = "Your email isn't correct")
-    @NotBlank(message = "Email is mandatory")
+            message = "{error.incorrect-email}")
+    @NotBlank(message = "{error.mandatory-email}")
     private String email;
 
     @Min(14)
     private int age;
 
-    @AssertTrue(message = "Password and Confirm password can be same")
+    @AssertTrue(message = "{error.password-valid}")
     private boolean isConfirmedPassword() {
         return this.password.equals(this.confirmPassword);
     }

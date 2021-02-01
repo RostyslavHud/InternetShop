@@ -11,10 +11,11 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.*;
 
 @RestController
 @RequestMapping("/v1/products")
@@ -30,20 +31,13 @@ public class ProductRestController {
         this.productService = productService;
     }
 
-    @GetMapping
-    @Operation(summary = "Get all products")
-    @ApiResponse(responseCode = "200", description = "Get all products",
-            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Product.class))})
-    public List<Product> getProducts() {
-        return productService.getAll();
-    }
-
     @GetMapping("/{id}")
     @Operation(summary = "Get all products by category id")
     @ApiResponse(responseCode = "200", description = "Get all products by",
             content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Product.class))})
-    public List<Product> getAllByCategory(@Parameter(description = "Category if for search product") @PathVariable Long id) throws ServiceException {
-        return productService.getAllByCategoryId(id);
+    public Page<Product> getAllByCategory(@Parameter(description = "Category if for search product") @PathVariable Long id,
+                                          @Parameter(description = "Parameters for pagination and sorting") Pageable pageable) throws ServiceException {
+        return productService.getAllByCategoryId(id, pageable);
     }
 
     @PostMapping

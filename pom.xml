@@ -17,6 +17,7 @@
         <flyway.version>6.4.0</flyway.version>
         <mapstruct.version>1.4.1.Final</mapstruct.version>
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+        <swagger.version>3.0.0</swagger.version>
     </properties>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -57,14 +58,30 @@
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-boot-starter</artifactId>
-            <version>3.0.0</version>
+            <version>${swagger.version}</version>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
-            <version>3.0.0</version>
+            <version>${swagger.version}</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
@@ -85,6 +102,15 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${mapstruct.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>

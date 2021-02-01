@@ -3,7 +3,6 @@ package com.internetshop.rest;
 import com.internetshop.dto.RegistrationUserDTO;
 import com.internetshop.dto.SimpleUserDTO;
 import com.internetshop.mapper.UserMapper;
-import com.internetshop.mongoModel.Product;
 import com.internetshop.mysqlModel.User;
 import com.internetshop.exception.ServiceException;
 import com.internetshop.service.UserService;
@@ -44,7 +43,6 @@ public class UserRestController {
         if (userDetails != null) {
             user = userService.findByName(userDetails.getUsername());
         }
-
         return userMapper.userToSimpleUser(user);
     }
 

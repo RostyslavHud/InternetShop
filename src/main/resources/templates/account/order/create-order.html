@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta charset="UTF-8">
@@ -10,42 +10,99 @@
     <script src="/js/navigation.js"></script>
     <script src="/js/products.js"></script>
     <script src="/js/orders.js"></script>
+    <script src="/js/product-pagination.js"></script>
+    <script th:inline="javascript">
+        var buttonNext = [[#{button.next}]];
+        var buttonPrevious = [[#{button.previous}]];
+        var buttonFirst = [[#{button.first}]];
+        var buttonLast = [[#{button.last}]];
+    </script>
 </head>
 <body>
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light" id="logB">
-
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto" id="navbarHome">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/" th:text="#{nav.home}"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto" id="navbarRegistration">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/registration" th:text="#{nav.create-new-account}"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto" id="navbarOrder">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/order" th:text="#{nav.order}"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto" id="navbarProduct">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/new-product" th:text="#{nav.add-product}"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto" id="navbarLogin">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/login" th:text="#{nav.login}"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto" id="navbarLogout">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/logout" th:text="#{nav.logout}"> </a>
+                </li>
+            </ul>
+        </div>
     </nav>
 </div>
 
-<div class="create_order_container">
-    <div class="row">
-        <div class="col">
-        </div>
-        <div class="col-5">
-            <H4>New Order Form</H4>
-        </div>
-        <div class="col"></div>
+<div class="container">
+    <H2 th:text="#{title.new-order}"></H2>
+    <div class="form-order">
+        <label for="shipping_address" th:text="#{field.shipping-address}"></label>
+        <input class="form-control" type="text" id="shipping_address" th:placeholder="#{field.shipping-address}"/>
+        <p id="shipping_address_error" class="text-danger"></p>
+        <label for="description" th:text="#{field.description}"></label>
+        <input class="form-control" type="text" id="description" th:placeholder="#{field.description}"/>
     </div>
-    <div class="row">
-        <div class="col"></div>
-        <div class="col-5">
-            <div class="form-order">
-                <p>Shipping address: <input class="form-control" type="text" id="shipping_address"/></p>
-                <p id="shipping_address_error" class="text-danger"></p>
-                <p>Description: <input class="form-control" type="text" id="description"/></p>
-                <p>Please select products: </p>
-                <select id="category_list"></select>
-                <p id="order_items_error" class="text-danger"></p>
-                <p><a class="btn btn-secondary" href="#" role="button" onclick="send_order()">Create new order</a>
-                    <a class="btn btn-secondary" href="/order" role="button">Back</a></p>
-            </div>
-        </div>
-        <div class="col"></div>
-    </div>
-    <div class="col">
-        <table class='table' id="product_list"></table>
-    </div>
+    <p th:text="#{field.select-category}"></p>
+    <select id="category_list" style="height: 30px">
+        <option th:text="#{field.select-category}"></option>
+    </select>
+    <p th:text="#{field.select-product}"></p>
+    <p id="order_items_error" class="text-danger"></p>
+    <select id="product_count" style="width: 60px; height: 30px">
+        <option value="5" selected>5</option>
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+    </select>
+    <table class='table' id="product_list">
+        <tr>
+            <th scope="col" th:text="#{field.product-name}"></th>
+            <th th:text="#{field.product-price}"></th>
+            <th th:text="#{field.product-qty}"></th>
+            <th></th>
+        </tr>
+    </table>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center" id="pagination"></ul>
+    </nav>
+
+    <p><a class="btn btn-secondary" href="#" role="button" onclick="send_order()"
+          th:text="#{button.create-new-order}"></a>
+        <a class="btn btn-secondary" href="/order" role="button" th:text="#{button.back}"></a></p>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"

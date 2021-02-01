@@ -7,14 +7,14 @@
 <body>
 
 <div>
-    <h4>Hello, <b th:text = "${token.user.firstName}"></b></h4>
-    <p>Thank you for registration.</p>
+    <h4><b th:text="#{text.hello}">Hello,</b> <b th:text="${token.user.firstName}"></b></h4>
+    <p th:text="#{text.thanks-for-registration}">Thank you for registration.</p>
 </div>
 <div>
-    <p>Please click on confirm link</p>
+    <p th:text="#{text.click-on-confirm-link}"></p>
 </div>
 <div>
-    <p><a th:href=" ${tokenUrl}">Your Link for confirm</a></p>
+    <p><a th:href=" ${tokenUrl}" th:text="#{text.confirm-link}"></a></p>
 </div>
 
 </body>

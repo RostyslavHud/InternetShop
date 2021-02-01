@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta charset="UTF-8">
@@ -8,31 +8,77 @@
           crossorigin="anonymous">
     <title>Creation Product</title>
     <script src="/js/navigation.js"></script>
-    <script src="/js/products.js"></script>
     <script src="/js/categories.js"></script>
 </head>
 <body>
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light" id="logB">
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto" id="navbarHome">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/" th:text="#{nav.home}"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto" id="navbarRegistration">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/registration" th:text="#{nav.create-new-account}"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto" id="navbarOrder">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/order" th:text="#{nav.order}"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto" id="navbarProduct">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/new-product" th:text="#{nav.add-product}"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto" id="navbarLogin">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/login" th:text="#{nav.login}"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto" id="navbarLogout">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/logout" th:text="#{nav.logout}"> </a>
+                </li>
+            </ul>
+        </div>
     </nav>
 </div>
 
 <div class="container">
+    <h2 th:text="#{title.new-product}"></h2>
     <form class="form-signin" method="post" action="">
-        <h2 class="form-signin-heading">New Product Form</h2>
         <p>
-            <label for="product_name">Product name</label>
-            <input type="text" id="product_name" name="product_name" class="form-control" placeholder="Product name">
+            <label for="product_name" th:text="#{field.product-name}"></label>
+            <input type="text" id="product_name" name="product_name" class="form-control"
+                   th:placeholder="#{field.product-name}">
         <p id="product_name_error" class="text-danger"></p>
         </p>
         <p>
-            <label for="price">Price</label>
-            <input type="price" id="price" name="price" class="form-control" placeholder="Price">
+            <label for="price" th:text="#{field.product-price}"></label>
+            <input type="price" id="price" name="price" class="form-control" th:placeholder="#{field.product-price}">
         <p id="price_error" class="text-danger"></p>
         </p>
-        <p>Choose the categories</p>
-        <table id="category_list"></table>
-        <a class="btn btn-lg btn-secondary btn-block" onclick="send_product()" href="#">Confirm</a>
+        <p th:text="#{field.select-category}"></p>
+        <table id="category_list">
+            <tr>
+                <th scope="col" th:text="#{field.category-name}"></th>
+                <th></th>
+        </table>
+        <a class="btn btn-lg btn-secondary btn-block" onclick="send_product()" href="#" th:text="#{button.confirm}"></a>
     </form>
 </div>
 

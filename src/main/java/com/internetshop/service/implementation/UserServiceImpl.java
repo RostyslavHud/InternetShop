@@ -7,13 +7,16 @@ import com.internetshop.mysqlModel.VerificationToken;
 import com.internetshop.mysqlRepository.UserRepository;
 import com.internetshop.exception.ServiceException;
 import com.internetshop.mysqlRepository.VerificationTokenRepository;
+import com.internetshop.service.LanguageService;
 import com.internetshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.UUID;
 
 @Service("userService")
@@ -31,6 +34,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private EmailServiceImpl emailService;
 
+    @Autowired
+    private LanguageService languageService;
+
     @Override
     public User findByName(String name) throws ServiceException {
         if (name.isEmpty()) {
@@ -47,6 +53,9 @@ public class UserServiceImpl implements UserService {
         if (userRepository.countEmail(user.getEmail()) > 0) {
             throw new ServiceException(Errors.SAME_USER_EMAIL);
         }
+
+        Locale locale = new Locale(LocaleContextHolder.getLocale().toString());
+        user.setLanguage(languageService.findByName(locale.toLanguageTag()));
         user.setRole(Role.USER);
         user.setRegistrationDate(LocalDateTime.now());
         user.setPassword(passwordEncoder.encode(user.getPassword()));

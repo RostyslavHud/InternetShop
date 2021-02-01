@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta charset="UTF-8">
@@ -9,19 +9,105 @@
     <title>Orders</title>
     <script src="/js/navigation.js"></script>
     <script src="/js/orders.js"></script>
+    <script src="/js/show-orders.js"></script>
+    <script src="/js/order-pagination.js"></script>
+    <script th:inline="javascript">
+        var buttonUpdate = [[#{button.update}]];
+        var buttonDelete = [[#{button.delete}]];
+        var buttonNext = [[#{button.next}]];
+        var buttonPrevious = [[#{button.previous}]];
+        var buttonFirst = [[#{button.first}]];
+        var buttonLast = [[#{button.last}]];
+    </script>
+
 </head>
 <body>
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light" id="logB">
-
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto" id="navbarHome">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/" th:text="#{nav.home}"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto" id="navbarRegistration">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/registration" th:text="#{nav.create-new-account}"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto" id="navbarOrder">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/order" th:text="#{nav.order}"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto" id="navbarProduct">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/new-product" th:text="#{nav.add-product}"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto" id="navbarLogin">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/login" th:text="#{nav.login}"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto" id="navbarLogout">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/logout" th:text="#{nav.logout}"> </a>
+                </li>
+            </ul>
+        </div>
     </nav>
 </div>
-
-<table class="table" id="user_orders">
-
-</table>
-
-<a class="btn btn-secondary" href="/new-order" role="button">Create new order</a>
+<div class="container">
+    <H2 th:text="#{title.orders}"></H2>
+    <label for="order_count" th:text="#{text.show}">Show: </label>
+    <select id="order_count" style="width: 60px; height: 30px">
+        <option value="5" selected>5</option>
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+    </select>
+    <label for="order_sort" th:text="#{text.sort-by}">Sort By: </label>
+    <select id="order_sort" style="width: 180px; height: 30px">
+        <option value="orderNumber" th:text="#{field.order-number}" selected>Order Number</option>
+        <option value="date" th:text="#{field.order-date}">Order Date</option>
+        <option value="user.name" th:text="#{field.order-customer}">Customer Name</option>
+        <option value="price" th:text="#{field.amount}">Amount</option>
+    </select>
+    <label for="sort" th:text="#{text.sort-type}">Sort type: </label>
+    <select id="sort" style="width: 180px; height: 30px">
+        <option value="asc" selected th:text="#{field.sort-type-asc}">Asc</option>
+        <option value="desc" th:text="#{field.sort-type-desc}">Desc</option>
+    </select>
+    <table id="user_orders" class="table table-striped table-bordered table-sm">
+        <tr>
+            <th class="th-sm" scope="col" th:text="#{field.order-number}"></th>
+            <th class="th-sm" th:text="#{field.order-date}"></th>
+            <th th:text="#{field.order-customer}"></th>
+            <th th:text="#{field.shipping-address}"></th>
+            <th th:text="#{field.description}"></th>
+            <th th:text="#{field.amount}"></th>
+            <th th:text="#{field.order-status}"></th>
+            <th th:text="#{field.updated-by}"></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </table>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center" id="pagination"></ul>
+    </nav>
+    <a class="btn btn-secondary" href="/new-order" role="button" th:text="#{button.create-new-order}"></a>
+</div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
