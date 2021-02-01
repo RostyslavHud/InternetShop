@@ -48,14 +48,14 @@ public class OrderServiceImpl implements OrderService {
         if (userName.equals("")) {
             throw new ServiceException(Errors.EMPTY_USER_NAME);
         }
-        Page<Order> orders = null;
+
         User user = userRepository.findByName(userName);
         if (user.getRole() == Role.USER) {
-            orders = orderRepository.findAllByUserId(user.getId(), pageable);
+            return orderRepository.findAllByUserId(user.getId(), pageable);
         } else if (user.getRole() == Role.ADMIN) {
-            orders = orderRepository.findAll(pageable);
+            return orderRepository.findAll(pageable);
         }
-        return orders;
+        return null;
     }
 
     @Override

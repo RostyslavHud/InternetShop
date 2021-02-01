@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.Set;
 
-@Service("userDetailsServiceImpl")
+@Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;

@@ -1,6 +1,7 @@
 package com.internetshop.dto;
 
 import com.internetshop.mysqlModel.OrderItem;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class CreationOrderDTO {
 
     private List<OrderItem> orderItems;
