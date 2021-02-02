@@ -10,6 +10,7 @@ import com.internetshop.mysqlRepository.VerificationTokenRepository;
 import com.internetshop.service.LanguageService;
 import com.internetshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,7 @@ public class UserServiceImpl implements UserService {
     private LanguageService languageService;
 
     @Override
+    @Cacheable(value = "user", key = "#name")
     public User findByName(String name) throws ServiceException {
         if (name.isEmpty()) {
             throw new ServiceException(Errors.EMPTY_USER_NAME);

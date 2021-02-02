@@ -10,6 +10,7 @@ function show_user() {
             $("#navbarRegistration").hide();
             $("#navbarLogout").show();
             $("#navbarOrder").show();
+            $("#navbarProduct").hide();
             if (data.role === "ADMIN") {
                 $("#navbarProduct").show();
             }

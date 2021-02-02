@@ -9,7 +9,8 @@ function show_order_pagination(data) {
 
     let pag;
 
-    if (data.totalPages === 1) {
+
+    if (data.totalPages === 1 || data.totalPages === 0) {
         pag = "<li class='page-item disabled'><a class='page-link' id = '" + first + "' href='#' onclick='show_orders(id)'>" + buttonFirst + "</a></li>\n" +
             "<li class='page-item disabled'><a class='page-link' id = '" + previous + "' href='#' onclick='show_orders(id)'>" + buttonPrevious + "</a></li>\n" +
             "<li class='page-item disabled'><a class='page-link' href='#'>Page:" + current + " of " + last + "</a></li>\n" +

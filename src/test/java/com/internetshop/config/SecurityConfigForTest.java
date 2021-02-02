@@ -10,13 +10,13 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import java.util.Arrays;
 
-@TestConfiguration
+@TestConfiguration()
 public class SecurityConfigForTest {
 
     @Primary
     @Bean
     public InMemoryUserDetailsManager userDetailsService() {
-        User basicUser = new User("admin", new BCryptPasswordEncoder(12).encode("1"),
+        User basicUser = new User("admin", new BCryptPasswordEncoder(12).encode("2"),
                 Arrays.asList(new SimpleGrantedAuthority("ADMIN")));
         return new InMemoryUserDetailsManager(basicUser);
     }
