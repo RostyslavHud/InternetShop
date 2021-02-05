@@ -18,8 +18,6 @@ function update_order() {
         order.orderItems[i] = orderItem;
     }
 
-    console.log(order);
-
     $.ajax({
         url: '/v1/orders/' + $("#order_id").val(),
         type: 'PUT',
@@ -67,9 +65,6 @@ function send_order() {
         }
         order.orderItems[i] = orderItem;
     }
-
-    console.log(order);
-
 
     $.ajax({
         url: '/v1/orders/',

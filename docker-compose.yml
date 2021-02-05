@@ -14,11 +14,10 @@ services:
 
   mongodb:
     image: mongo:latest
-    container_name: mongo-db
-    environment:
-       - MONGO_INITDB_ROOT_USERNAME=root
-       - MONGO_INITDB_ROOT_PASSWORD=root
-       - MONGO_INITDB_DATABASE=internetshopdb
+    container_name: mongodb1
+    networks:
+      - internetshop-mongodb
+
 
   internetshop:
     image: internetshop
@@ -27,10 +26,15 @@ services:
       - 8080:8080
     networks:
       - internetshop-mysqldb
+      - internetshop-mongodb
     depends_on:
       - mysqldb
-
+      - mongodb
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/internetshopdb
 
 networks:
   internetshop-mysqldb:
+    driver: bridge
+  internetshop-mongodb:
     driver: bridge
