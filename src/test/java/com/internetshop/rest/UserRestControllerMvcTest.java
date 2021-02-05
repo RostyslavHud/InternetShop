@@ -1,5 +1,7 @@
 package com.internetshop.rest;
 
+import com.internetshop.dto.EmailUserDTO;
+import com.internetshop.dto.PasswordUserDTO;
 import com.internetshop.dto.RegistrationUserDTO;
 import com.internetshop.dto.SimpleUserDTO;
 import com.internetshop.mapper.UserMapper;
@@ -13,8 +15,11 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+
 
 @WebMvcTest(UserRestController.class)
 class UserRestControllerMvcTest extends AbstractRestControllerMvcTest {
@@ -217,4 +222,90 @@ class UserRestControllerMvcTest extends AbstractRestControllerMvcTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(expectedResult));
     }
+
+    @Test
+    void incorrectEmailErrorInResetPassword() throws Exception {
+        String expectedResult = "{\"code\":1102,\"messages\":{\"email\":\"Your email isn't correct\"}}";
+
+        User user = new User();
+        when(userMapper.emailUserToUser(new EmailUserDTO())).thenReturn(user);
+        doNothing().when(userService).resetUser(user);
+
+        mockMvc.perform(put("/v1-public/reset")
+                .content(asJsonString(new EmailUserDTO("sdfsdf")))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedResult));
+    }
+
+    @Test
+    void emailWithoutDogErrorInResetPassword() throws Exception {
+        String expectedResult = "{\"code\":1102,\"messages\":{\"email\":\"Your email isn't correct\"}}";
+
+        User user = new User();
+        when(userMapper.emailUserToUser(new EmailUserDTO())).thenReturn(user);
+        doNothing().when(userService).resetUser(user);
+
+        mockMvc.perform(put("/v1-public/reset")
+                .content(asJsonString(new EmailUserDTO("sdfsdf.sdfgsdf")))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedResult));
+    }
+
+    @Test
+    void incorrectPasswordErrorInResetPassword() throws Exception {
+        String expectedResult = "{\"code\":1102,\"messages\":{\"password\":\"Password should be strong and it should " +
+                "have 1 big letter, 1 small letter and 1 numeral and it's length should be min 8 symbols\"}}";
+
+        User user = new User();
+        when(userMapper.passwordUserToUser(new PasswordUserDTO())).thenReturn(user);
+        doNothing().when(userService).resetPassword("", user);
+
+        mockMvc.perform(put("/v1-public/reset-password/{}", "")
+                .content(asJsonString(new PasswordUserDTO("sdfa", "sdfa")))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedResult));
+    }
+
+    @Test
+    void passwordsIsNotSameErrorInResetPassword() throws Exception {
+        String expectedResult = "{\"code\":1102,\"messages\":{\"confirmedPassword\":\"Password and " +
+                "Confirm password can be same\"}}";
+
+        User user = new User();
+        when(userMapper.passwordUserToUser(new PasswordUserDTO())).thenReturn(user);
+        doNothing().when(userService).resetPassword("", user);
+
+        mockMvc.perform(put("/v1-public/reset-password/{}", "")
+                .content(asJsonString(new PasswordUserDTO("adMin123", "sdfa")))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedResult));
+    }
+
+    @Test
+    void emptyConfirmPasswordErrorInResetPassword() throws Exception {
+        String expectedResult = "{\"code\":1102,\"messages\":{\"confirmedPassword\":\"Password and Confirm password " +
+                "can be same\",\"confirmPassword\":\"Confirm Password is mandatory\"}}";
+
+        User user = new User();
+        when(userMapper.registrationUserToUser(new RegistrationUserDTO())).thenReturn(user);
+        doNothing().when(userService).addNewUser(user);
+
+        mockMvc.perform(put("/v1-public/reset-password/{}", "")
+                .content(asJsonString(new PasswordUserDTO("adMin123", "")))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedResult));
+    }
+
+
+
 }

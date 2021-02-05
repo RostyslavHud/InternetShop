@@ -26,10 +26,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
 
-        boolean active = true;
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
-        boolean accountNonLocked = true;
 
         User user = userRepository.findByName(name);
         if (user == null) {
@@ -44,7 +42,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 user.isActive(),
                 accountNonExpired,
                 credentialsNonExpired,
-                accountNonLocked,
+                user.isAccountNonLocked(),
                 roles);
     }
 }

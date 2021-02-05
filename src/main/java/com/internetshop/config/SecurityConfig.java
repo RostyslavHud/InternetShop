@@ -1,8 +1,11 @@
 package com.internetshop.config;
 
 import com.internetshop.enums.Role;
+import com.internetshop.security.CustomAuthenticationFailureHandler;
+import com.internetshop.security.CustomAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,6 +25,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
 
     @Autowired
+    CustomAuthenticationSuccessHandler successHandler;
+
+    @Autowired
+    CustomAuthenticationFailureHandler failureHandler;
+
+    @Autowired
     public SecurityConfig(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
@@ -31,10 +40,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
+
                 .antMatchers("/", "/js/**", "/registration", "/success-registration",
-                        "/confirm/**", "/v1-public/**").permitAll()
+                        "/confirm/**", "/v1-public/**", "/login", "/login?error", "/reset-user",
+                        "/success-reset-user", "/success-reset-password", "/reset/**").permitAll()
 
                 .antMatchers("/account/**", "/v1/**").hasAnyAuthority(Role.ADMIN.name(), Role.USER.name())
+
 
                 .antMatchers("/new-product").hasAnyAuthority(Role.ADMIN.name())
 
@@ -43,7 +55,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/")
+                .successHandler(successHandler)
+                .failureHandler(failureHandler)
+                .permitAll()
                 .and()
                 .logout()
                 .invalidateHttpSession(true)
@@ -69,4 +83,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         return daoAuthenticationProvider;
     }
+
 }

@@ -42,6 +42,9 @@ public class User {
     @Column(name = "active")
     private boolean active;
 
+    @Column(name = "account_non_locked")
+    private boolean accountNonLocked;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "language_id")
     private Language language;

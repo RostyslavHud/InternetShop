@@ -2,14 +2,21 @@ package com.internetshop.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.internetshop.config.SecurityConfigForTest;
+import com.internetshop.security.CustomAuthenticationFailureHandler;
+import com.internetshop.security.CustomAuthenticationSuccessHandler;
 import com.internetshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-@Import(SecurityConfigForTest.class)
+
+@Import({SecurityConfigForTest.class,
+        CustomAuthenticationSuccessHandler.class,
+        CustomAuthenticationFailureHandler.class})
+@AutoConfigureMockMvc(addFilters = false)
 @WithMockUser(username = "admin", password = "1", authorities = "ADMIN")
 public class AbstractRestControllerMvcTest {
 
@@ -18,7 +25,6 @@ public class AbstractRestControllerMvcTest {
 
     @Autowired
     MockMvc mockMvc;
-
 
     public static String asJsonString(final Object obj) {
         try {

@@ -10,8 +10,9 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import java.util.Arrays;
 
-@TestConfiguration()
+@TestConfiguration
 public class SecurityConfigForTest {
+
 
     @Primary
     @Bean

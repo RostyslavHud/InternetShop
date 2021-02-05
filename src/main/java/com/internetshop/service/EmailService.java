@@ -11,4 +11,6 @@ public interface EmailService {
     void sendConfirmRegistrationMail(VerificationToken verificationToken) throws MessagingException;
 
     void remindAboutConfirmRegistrationMail(VerificationToken verificationToken) throws MessagingException;
+
+    void resetUserMail(VerificationToken verificationToken) throws MessagingException;
 }
