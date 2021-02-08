@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import java.time.LocalDateTime;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -51,7 +52,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Cacheable(value = "user", key = "#name")
     public User findByName(String name) throws ServiceException {
-        if (name.isEmpty()) {
+        if (name.isBlank()) {
             throw new ServiceException(Errors.EMPTY_USER_NAME);
         }
         return userRepository.findByName(name);
@@ -83,13 +84,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void confirmRegistration(String token) throws ServiceException {
-        if (token == null) {
+        if (token.isBlank()) {
             throw new ServiceException(Errors.EMPTY_TOKEN);
         }
-        VerificationToken verificationToken = verificationTokenRepository.findByToken(token);
-        if (verificationToken == null) {
-            throw new ServiceException(Errors.INCORRECT_TOKEN);
-        }
+
+        VerificationToken verificationToken = Optional.of(verificationTokenRepository.findByToken(token))
+                .orElseThrow(() -> new ServiceException(Errors.INCORRECT_TOKEN));
+
         if (verificationToken.getExpiryDate().isBefore(LocalDateTime.now())) {
             throw new ServiceException(Errors.EXPIRY_DATE_TOKEN);
         }
@@ -110,7 +111,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void resetFailAttempts(String username) {
         UserAttempts userAttempts = userAttemptsRepository.findByUsername(username)
-                .orElse(newUserAttempts(username));
+                .orElseGet(() -> newUserAttempts(username));
         userAttempts.setAttempts(0);
         userAttempts.setLastModified(LocalDateTime.now());
         userAttemptsRepository.save(userAttempts);
@@ -120,7 +121,7 @@ public class UserServiceImpl implements UserService {
     @CacheEvict(value = "user", allEntries = true)
     public void updateFailAttempts(String username) {
         UserAttempts userAttempts = userAttemptsRepository.findByUsername(username)
-                .orElse(newUserAttempts(username));
+                .orElseGet(() -> newUserAttempts(username));
         int attempt = userAttempts.getAttempts() + 1;
 
         if (attempt > MAX_ATTEMPTS) {
@@ -151,13 +152,13 @@ public class UserServiceImpl implements UserService {
     @CacheEvict(value = "user", allEntries = true)
     @Override
     public void resetPassword(String token, User user) throws ServiceException {
-        if (token == null) {
+        if (token.isBlank()) {
             throw new ServiceException(Errors.EMPTY_TOKEN);
         }
-        VerificationToken verificationToken = verificationTokenRepository.findByToken(token);
-        if (verificationToken == null) {
-            throw new ServiceException(Errors.INCORRECT_TOKEN);
-        }
+
+        VerificationToken verificationToken = Optional.of(verificationTokenRepository.findByToken(token))
+                .orElseThrow(() -> new ServiceException(Errors.INCORRECT_TOKEN));
+
         if (verificationToken.getExpiryDate().isBefore(LocalDateTime.now())) {
             throw new ServiceException(Errors.EXPIRY_DATE_TOKEN);
         }

@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 @Slf4j
@@ -42,7 +43,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
 
         try {
             User user = userService.findByName(username);
-            if (user != null) {
+            if (Objects.nonNull(user)) {
                 if (user.isAccountNonLocked()) {
                     userService.updateFailAttempts(username);
                     e = new CredentialsExpiredException(ResourceBundle.getBundle("messages", locale)
