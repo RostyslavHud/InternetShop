@@ -14,6 +14,7 @@ import org.thymeleaf.context.Context;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 @Service("emailService")
 public class EmailServiceImpl implements EmailService {
@@ -33,7 +34,8 @@ public class EmailServiceImpl implements EmailService {
     public void sendConfirmRegistrationMail(VerificationToken verificationToken) throws MessagingException {
 
         String language = verificationToken.getUser().getLanguage().getName();
-        Context context = new Context(new Locale(language));
+        Locale locale = new Locale(language);
+        Context context = new Context(locale);
         context.setVariable("token", verificationToken);
         StringBuilder formatUrl = new StringBuilder();
         context.setVariable("tokenUrl", formatUrl.append(url).append("/confirm/")
@@ -43,7 +45,9 @@ public class EmailServiceImpl implements EmailService {
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
-        helper.setSubject("text.welcome" + verificationToken.getUser().getFirstName());
+
+        helper.setSubject(ResourceBundle.getBundle("messages", locale)
+                .getString("text.welcome") + verificationToken.getUser().getFirstName());
         helper.setText(process, true);
         helper.setTo(verificationToken.getUser().getEmail());
 
@@ -55,7 +59,8 @@ public class EmailServiceImpl implements EmailService {
     public void remindAboutConfirmRegistrationMail(VerificationToken verificationToken) throws MessagingException {
 
         String language = verificationToken.getUser().getLanguage().getName();
-        Context context = new Context(new Locale(language));
+        Locale locale = new Locale(language);
+        Context context = new Context(locale);
         context.setVariable("token", verificationToken);
         StringBuilder formatUrl = new StringBuilder();
         context.setVariable("tokenUrl", formatUrl.append(url).append("/confirm/")
@@ -68,7 +73,32 @@ public class EmailServiceImpl implements EmailService {
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
-        helper.setSubject("text.welcome" + verificationToken.getUser().getFirstName());
+        helper.setSubject(ResourceBundle.getBundle("messages", locale)
+                .getString("text.welcome") + verificationToken.getUser().getFirstName());
+        helper.setText(process, true);
+        helper.setTo(verificationToken.getUser().getEmail());
+
+        javaMailSender.send(mimeMessage);
+    }
+
+    @Async
+    @Override
+    public void resetUserMail(VerificationToken verificationToken) throws MessagingException {
+
+        String language = verificationToken.getUser().getLanguage().getName();
+        Locale locale = new Locale(language);
+        Context context = new Context(locale);
+        context.setVariable("token", verificationToken);
+        StringBuilder formatUrl = new StringBuilder();
+        context.setVariable("tokenUrl", formatUrl.append(url).append("/reset/")
+                .append(verificationToken.getToken()).toString());
+
+        String process = templateEngine.process("email-template/reset-user", context);
+
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+        helper.setSubject(ResourceBundle.getBundle("messages", locale)
+                .getString("text.welcome") + verificationToken.getUser().getFirstName());
         helper.setText(process, true);
         helper.setTo(verificationToken.getUser().getEmail());
 

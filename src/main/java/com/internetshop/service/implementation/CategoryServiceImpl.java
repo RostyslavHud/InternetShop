@@ -4,6 +4,7 @@ import com.internetshop.mysqlModel.Category;
 import com.internetshop.mysqlRepository.CategoryRepository;
 import com.internetshop.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +16,8 @@ public class CategoryServiceImpl implements CategoryService {
     CategoryRepository categoryRepository;
 
     @Override
+    @Cacheable("category")
     public List<Category> getAll() {
-        return (List<Category>) categoryRepository.findAll();
+        return categoryRepository.findAll();
     }
 }

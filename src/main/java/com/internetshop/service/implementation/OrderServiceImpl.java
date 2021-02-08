@@ -11,14 +11,20 @@ import com.internetshop.mongoRepository.ProductRepository;
 import com.internetshop.mysqlRepository.UserRepository;
 import com.internetshop.service.OrderService;
 import com.internetshop.exception.ServiceException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service("orderService")
+@Slf4j
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
@@ -31,6 +37,7 @@ public class OrderServiceImpl implements OrderService {
     UserRepository userRepository;
 
     @Override
+    @Cacheable(value = "order")
     public Order getById(Long id) throws ServiceException {
         if (id < 1) {
             throw new ServiceException(Errors.INCORRECT_ID);
@@ -40,12 +47,14 @@ public class OrderServiceImpl implements OrderService {
             orderItem.setProduct(productRepository.findById(orderItem.getProductId())
                     .orElseThrow(() -> new ServiceException(Errors.PRODUCT_NOT_FOUND)));
         }
+        log.info("Get order : {}", order.getOrderNumber());
         return order;
     }
 
     @Override
+    @Cacheable("order")
     public Page<Order> getAll(String userName, Pageable pageable) throws ServiceException {
-        if (userName.equals("")) {
+        if (userName.isBlank()) {
             throw new ServiceException(Errors.EMPTY_USER_NAME);
         }
 
@@ -55,40 +64,45 @@ public class OrderServiceImpl implements OrderService {
         } else if (user.getRole() == Role.ADMIN) {
             return orderRepository.findAll(pageable);
         }
+        log.info("Get {} orders on {} page", pageable.getPageSize(), pageable.getPageNumber());
         return null;
     }
 
     @Override
+    @CacheEvict(value = "order", allEntries = true)
     public void add(Order order, String userName) throws ServiceException {
-        if (order == null) {
-            throw new ServiceException(Errors.EMPTY_ORDER);
-        }
+
+        Order checkedOrder = Optional.of(order).orElseThrow(() -> new ServiceException(Errors.EMPTY_ORDER));
+
         Long maxOrderNumber = orderRepository.findMaxOrderNumber();
-        if (maxOrderNumber == null) {
+
+        if (Objects.isNull(maxOrderNumber)) {
             maxOrderNumber = 100000L;
         }
-        order.setOrderNumber(maxOrderNumber + 1);
-        order.setUser(userRepository.findByName(userName));
-        order.setDate(LocalDateTime.now());
-        order.setStatus(OrderStatus.CREATED);
+        checkedOrder.setOrderNumber(maxOrderNumber + 1);
+        checkedOrder.setUser(userRepository.findByName(userName));
+        checkedOrder.setDate(LocalDateTime.now());
+        checkedOrder.setStatus(OrderStatus.CREATED);
         double price = 0;
-        for (OrderItem orderItem : order.getOrderItems()) {
+        for (OrderItem orderItem : checkedOrder.getOrderItems()) {
             price += orderItem.getProductQty() * productRepository.findById(orderItem.getProductId())
                     .orElseThrow(() -> new ServiceException(Errors.PRODUCT_NOT_FOUND)).getPrice();
         }
-        order.setPrice(price);
-        orderRepository.save(order);
+        checkedOrder.setPrice(price);
+        log.info("Add order : {}", checkedOrder.getOrderNumber());
+        orderRepository.save(checkedOrder);
     }
 
     @Override
+    @CacheEvict(value = "order", allEntries = true)
     public void update(Order order, String userName) throws ServiceException {
-        if (order == null) {
-            throw new ServiceException(Errors.EMPTY_ORDER);
-        }
-        if (order.getOrderNumber() < 1) {
+
+        Order checkedOrder = Optional.of(order).orElseThrow(() -> new ServiceException(Errors.EMPTY_ORDER));
+
+        if (checkedOrder.getOrderNumber() < 1) {
             throw new ServiceException(Errors.INCORRECT_ID);
         }
-        Order savedOrder = orderRepository.findOrderByOrderNumber(order.getOrderNumber())
+        Order savedOrder = orderRepository.findOrderByOrderNumber(checkedOrder.getOrderNumber())
                 .orElseThrow(() -> new ServiceException(Errors.ORDER_NOT_FOUND));
 
         if (!order.getOrderItems().isEmpty()) {
@@ -104,17 +118,20 @@ public class OrderServiceImpl implements OrderService {
         savedOrder.setShippingAddress(order.getShippingAddress());
         savedOrder.setDescription(order.getDescription());
 
+        log.info("Update order {}: ", order.getOrderNumber());
         orderRepository.save(savedOrder);
     }
 
     @Override
+    @CacheEvict(value = "order", allEntries = true)
     public void delete(Order order) throws ServiceException {
-        if (order == null) {
-            throw new ServiceException(Errors.EMPTY_ORDER);
-        }
-        if (order.getId() < 1) {
+
+        Order checkedOrder = Optional.of(order).orElseThrow(() -> new ServiceException(Errors.EMPTY_ORDER));
+
+        if (checkedOrder.getId() < 1) {
             throw new ServiceException(Errors.INCORRECT_ID);
         }
-        orderRepository.delete(order);
+        log.info("Delete order {}: ", checkedOrder.getOrderNumber());
+        orderRepository.delete(checkedOrder);
     }
 }

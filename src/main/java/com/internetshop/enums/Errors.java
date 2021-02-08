@@ -11,6 +11,7 @@ public enum Errors {
     EMPTY_USER_NAME(3406, "error.empty-user-name", "userClass"),
     SAME_USER_NAME(3407, "error.same-user-name", "name"),
     SAME_USER_EMAIL(3408, "error.same-user-email", "email"),
+    INCORRECT_USER_EMAIL(3408, "error.incorrect-user-email", "email"),
     USER_NOT_FOUND(3404, "error.user-not-found", "userClass"),
 
     PRODUCT_NOT_FOUND(4404, "error.product-not-found", "productClass"),
@@ -22,7 +23,9 @@ public enum Errors {
 
     CATEGORY_NOT_FOUND(6404, "error.category-not-found", "categoryClass"),
 
-    LANGUAGE_NOT_FOUND(7404, "error.language-not-found", "languageClass");
+    LANGUAGE_NOT_FOUND(7404, "error.language-not-found", "languageClass"),
+
+    USER_ATTEMPTS_NOT_FOUND(8404, "error.user-attempts-not-found", "userAttemptsClass");
 
 
     private final int code;

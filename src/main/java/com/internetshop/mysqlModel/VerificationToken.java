@@ -33,6 +33,5 @@ public class VerificationToken {
     public VerificationToken(String token, User user) {
         this.token = token;
         this.user = user;
-        this.expiryDate = user.getRegistrationDate().plusDays(1);
     }
 }

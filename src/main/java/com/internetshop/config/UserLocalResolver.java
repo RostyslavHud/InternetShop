@@ -33,7 +33,7 @@ public class UserLocalResolver extends SessionLocaleResolver {
         String userName = securityContext.getAuthentication().getName();
         User user = userService.findByName(userName);
 
-        if (user != null) {
+        if (Objects.nonNull(user)) {
             return Locale.forLanguageTag(user.getLanguage().getName());
         }
 

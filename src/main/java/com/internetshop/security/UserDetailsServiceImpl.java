@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service("userDetailsService")
@@ -26,16 +27,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
 
-        boolean active = true;
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
-        boolean accountNonLocked = true;
 
-        User user = userRepository.findByName(name);
-        if (user == null) {
-            throw new UsernameNotFoundException(
-                    "No user found with username: " + name);
-        }
+        User user = Optional.of(userRepository.findByName(name))
+                .orElseThrow(() -> new UsernameNotFoundException("No user found with username: " + name));
+
         Set<GrantedAuthority> roles = new HashSet<>();
         roles.add(new SimpleGrantedAuthority(user.getRole().name()));
 
@@ -44,7 +41,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 user.isActive(),
                 accountNonExpired,
                 credentialsNonExpired,
-                accountNonLocked,
+                user.isAccountNonLocked(),
                 roles);
     }
 }

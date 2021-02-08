@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div>
+    <h4><b th:text="#{text.hello}">Hello,</b> <b th:text="${token.user.firstName}"></b></h4>
+    <p th:text="#{text.reset-user}"></p>
+</div>
+<div>
+    <p><a th:href=" ${tokenUrl}" th:text="#{text.confirm-link}"></a></p>
+</div>
+
+</body>
+</html>

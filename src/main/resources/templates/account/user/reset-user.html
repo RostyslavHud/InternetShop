@@ -8,6 +8,7 @@
           crossorigin="anonymous">
     <title>Login</title>
     <script src="/js/navigation.js"></script>
+    <script src="/js/user.js"></script>
 </head>
 <body>
 <div class="container">
@@ -59,25 +60,16 @@
 
 
 <div class="container">
-    <form class="form-signin" method="post" action="/login">
-        <h2 class="form-signin-heading" th:text="#{title.login}"></h2>
-        <div id="error_message" class="text-danger" th:if="${param.error}">
-            [[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]
-        </div>
-        <p>
-            <label for="username" th:text="#{field.username}"></label>
-            <input type="text" id="username" name="username" class="form-control" th:placeholder="#{field.username}"
-                   required>
-        </p>
-        <p>
-            <label for="password" th:text="#{field.password}"></label>
-            <input type="password" id="password" name="password" class="form-control" th:placeholder="#{field.password}"
-                   required>
-        </p>
-        <button class="btn btn-lg btn-secondary btn-block" type="submit" th:text="#{button.signin}"></button>
-        <a th:if="${param.error}" class="btn btn-lg btn-secondary btn-block" href="/reset-user"
-           th:text="#{button.reset-password}"></a>
-    </form>
+
+    <p>
+        <label for="email" th:text="#{field.email}"></label>
+        <input type="text" id="email" name="email" class="form-control" th:placeholder="#{field.email}"
+               required>
+    </p>
+    <p id="email_error" class="text-danger"></p>
+
+    <a class="btn btn-lg btn-secondary btn-block" onclick="reset_user()" th:text="#{button.confirm}"></a>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"

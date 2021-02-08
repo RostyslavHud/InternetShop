@@ -6,6 +6,7 @@ import com.internetshop.mysqlModel.Language;
 import com.internetshop.mysqlRepository.LanguageRepository;
 import com.internetshop.service.LanguageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service("languageService")
@@ -15,6 +16,7 @@ public class LanguageServiceImpl implements LanguageService {
     LanguageRepository languageRepository;
 
     @Override
+    @Cacheable(value = "language")
     public Language findByName(String name) throws ServiceException {
         if (name.equals("und")) {
             name = "en";

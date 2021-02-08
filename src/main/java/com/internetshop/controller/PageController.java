@@ -6,11 +6,7 @@ import com.internetshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping
@@ -29,7 +25,9 @@ public class PageController {
     }
 
     @GetMapping("/")
-    public String getHomePage() { return "index"; }
+    public String getHomePage() {
+        return "index";
+    }
 
     @GetMapping("/order")
     public String getOrdersPage() {
@@ -59,13 +57,34 @@ public class PageController {
         return "account/success/confirm-registration";
     }
 
+    @GetMapping("/reset/{token}")
+    public String getResetPasswordPage(@PathVariable String token, Model model) {
+        model.addAttribute(token);
+        return "account/user/reset-password";
+    }
+
     @GetMapping("/success-registration")
     public String getSuccessRegistrationPage() {
         return "account/success/registration";
     }
 
+    @GetMapping("/success-reset-user")
+    public String getSuccessResetUser() {
+        return "account/success/reset-user";
+    }
+
+    @GetMapping("/success-reset-password")
+    public String getSuccessResetPassword() {
+        return "account/success/reset-password";
+    }
+
     @GetMapping("/new-product")
     public String getNewProductPage() {
         return "product/create-product";
+    }
+
+    @GetMapping("/reset-user")
+    public String getResetUserPage() {
+        return "account/user/reset-user";
     }
 }
